@@ -8,9 +8,9 @@ import dayOffset from '../timetracker/dayOffset/reducer'
 import {reducer as form} from 'redux-form';
 
 export default combineReducers({
-  routing: routeReducer,
-  reduxAsyncConnect,
-  form,
-  punchData,
-  dayOffset
+	routing: routeReducer,
+	reduxAsyncConnect,
+	form,
+	punchData,
+	dayOffset
 });

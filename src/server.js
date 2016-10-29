@@ -23,7 +23,7 @@ const app = new Express();
 const server = new http.Server(app);
 const proxy = httpProxy.createProxyServer({
 	target: targetUrl,
- 	ws: true
+	ws: true
 });
 
 app.use(compression());

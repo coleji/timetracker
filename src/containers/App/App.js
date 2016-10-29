@@ -13,32 +13,32 @@ import { asyncConnect } from 'redux-async-connect';
 import Timetracker from '../../components/timetracker/App'
 
 @asyncConnect([{
-  promise: () => {
-    const promises = [];
-    return Promise.all(promises);
-  }
+	promise: () => {
+		const promises = [];
+		return Promise.all(promises);
+	}
 }])
 @connect(
-  () => ({}),
-  {pushState: routeActions.push})
+	() => ({}),
+	{pushState: routeActions.push})
 export default class App extends Component {
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  };
+	static contextTypes = {
+		store: PropTypes.object.isRequired
+	};
 
-  componentWillReceiveProps() {
-  }
+	componentWillReceiveProps() {
+	}
 
-  handleLogout = (event) => {
-    event.preventDefault();
-  };
+	handleLogout = (event) => {
+		event.preventDefault();
+	};
 
-  render() {
-    return (
-      <div>
-        <Helmet {...config.app.head}/>
-        <Timetracker />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<Helmet {...config.app.head}/>
+				<Timetracker />
+			</div>
+		);
+	}
 }
