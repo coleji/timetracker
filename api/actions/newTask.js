@@ -3,7 +3,7 @@ import db from '../mysql.js'
 import moment from 'moment-timezone'
 
 export default function(taskName, punchDate) {
-	var dateForInsert = moment(String(punchDate)).tz("America/New_York").format();
+	var dateForInsert = moment(String(punchDate)).tz("America/New_York").format('YYYY-MM-DD HH:mm:ss');
 	return new Promise((resolve, reject) => {
 		db.query(
 			"insert into tasks set ?", {
