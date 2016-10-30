@@ -1,10 +1,11 @@
 import http from 'http'
+import config from './config'
 
 var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			hostname: 'localhost',
-			port: 3000,	//TODO: read from config
+			port: config.port,
 			path: '/api' + params.apiEndpoint,
 			method: params.httpMethod,
 			headers: {
