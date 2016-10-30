@@ -6,7 +6,7 @@ import SocketIo from 'socket.io';
 
 import config from '../src/config';
 import router from './router'
-
+console.log(config)
 const app = express();
 
 const server = new http.Server(app);
@@ -22,14 +22,27 @@ app.use(session({
 }));
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+	if (req.method != "OPTIONS") {
+		next()
+		return;
+	}
+	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	res.setHeader('Access-Control-Allow-Headers', [
+		'Content-Type',
+		'Content-Length'
+	].join(','));
+	res.status(200).end()
+})
 
 app.use((req, res) => {
-	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type')
-	router(req.url).then(data => {
+	router(req.url, req.body).then(data => {
 		res.send({data : data});
 	}).catch(err => {
+		console.log(err)
 		res.status(404).end('NOT FOUND');
 	})
 });

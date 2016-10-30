@@ -1,16 +1,15 @@
 import db from '../mysql.js'
 
-export default function() {
+export default function(addDays) {
 	return new Promise((resolve, reject) => {
-		db.query("select punch_id, punch_datetime, task_id from punches;", function(err, results, fields) {
+		db.query(
+			"select punch_id as punchID, punch_datetime as punchDate, " +
+			"p.task_id as taskID, task_name as taskName from punches p, tasks t " +
+			" where p.task_id = t.task_id and date(p.punch_datetime) = date(adddate(now(), " + addDays + "))" +
+			" order by punch_datetime desc;",
+			function(err, results, fields) {
 			if (err) reject(err);
-			else resolve(results.map(row => {
-				return {
-					punchID : row.punch_id,
-					punchDate : row.punch_datetime,
-					taskID : row.task_id
-				}
-			}));
+			else resolve(results);
 		});
 	})
 }

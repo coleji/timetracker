@@ -6,7 +6,6 @@ import { createActionFromAPIResponse } from '../../../api-client'
 var asyncIDCounter = -1;
 
 var getPunches = function(dispatch, dayOffset) {
-	console.log(dayOffset)
 	createActionFromAPIResponse({
 		httpMethod: 'GET',
 		apiEndpoint : '/getPunches/' + dayOffset,
@@ -14,7 +13,6 @@ var getPunches = function(dispatch, dayOffset) {
 	}).then((punches) => {
 		punches = punches || []
 		punches.forEach(e => { e.punchDate = new Date(e.punchDate) });
-		console.log(punches)
 		dispatch({
 			type: "GET_PUNCHES",
 			punches,
@@ -29,7 +27,7 @@ var newTask = function(dispatch, taskName, dayOffset) {
 	let tempPunchID = asyncIDCounter--;
 	let tempTaskID = asyncIDCounter--;
 	let punchDate = moment().add(dayOffset, 'days');
-
+	console.log(taskName + "  " + punchDate)
 	var newTaskPromise = createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/newTask',

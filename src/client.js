@@ -32,7 +32,7 @@ function initSocket() {
 	return socket;
 }
 
-global.socket = initSocket();
+// global.socket = initSocket();
 
 const component = (
 	<Router render={(props) =>

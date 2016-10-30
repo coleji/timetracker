@@ -8,7 +8,10 @@ var makeAPIRequest = function(params) {
 			path: params.apiEndpoint,
 			method: params.httpMethod,
 			headers: {
-			//	'Access-Control-Allow-Origin': 'http://localhost:3001'
+	//			'Access-Control-Allow-Origin': 'http://localhost:3030',
+	//			'Access-Control-Allow-Credentials' : 'true',
+	//			'Access-Control-Allow-Methods' : 'GET, POST',
+	//			'Access-Control-Allow-Headers' : 'Access-Control-Allow-Origin,Access-Control-Allow-Credentials,Access-Control-Allow-Methods,Content-Type,Content-Length'
 			}
 		};
 		if (params.httpMethod == 'POST') {
@@ -32,6 +35,8 @@ var makeAPIRequest = function(params) {
 		});
 
 		if (params.httpMethod == 'POST') {
+			console.log("posting!!")
+			console.log(params.postData)
 			req.write(JSON.stringify(params.postData));
 		}
 		req.end();
