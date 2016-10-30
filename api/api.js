@@ -5,6 +5,7 @@ import http from 'http';
 import SocketIo from 'socket.io';
 
 import config from '../src/config';
+import router from './router'
 
 const app = express();
 
@@ -23,7 +24,14 @@ app.use(bodyParser.json());
 
 
 app.use((req, res) => {
-	res.status(404).end('NOT FOUND');
+	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.setHeader('Access-Control-Allow-Credentials', 'true');
+	res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Origin, Content-Type')
+	router(req.url).then(data => {
+		res.send({data : data});
+	}).catch(err => {
+		res.status(404).end('NOT FOUND');
+	})
 });
 
 
@@ -39,7 +47,7 @@ if (config.apiPort) {
 		console.info('----\n==> 🌎  API is running on port %s', config.apiPort);
 		console.info('==> 💻  Send requests to http://%s:%s', config.apiHost, config.apiPort);
 	});
-
+/*
 	io.on('connection', (socket) => {
 		socket.emit('news', {msg: `'Hello World!' from server`});
 
@@ -60,7 +68,7 @@ if (config.apiPort) {
 					io.emit('msg', data);
 		});
 	});
-	io.listen(runnable);
+	io.listen(runnable);*/
 } else {
 	console.error('==>     ERROR: No PORT environment variable has been specified');
 }

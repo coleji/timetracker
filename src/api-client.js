@@ -4,11 +4,11 @@ var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			hostname: 'localhost',
-			port: 3001,
+			port: 3030,	//TODO: read from config
 			path: params.apiEndpoint,
 			method: params.httpMethod,
 			headers: {
-				'Access-Control-Allow-Origin': 'http://localhost:3001'
+			//	'Access-Control-Allow-Origin': 'http://localhost:3001'
 			}
 		};
 		if (params.httpMethod == 'POST') {
@@ -22,7 +22,9 @@ var makeAPIRequest = function(params) {
 				resData += chunk;
 			});
 			res.on('end', () => {
-				resolve(JSON.parse(resData));
+				let response = JSON.parse(resData)
+				console.log(response)
+				resolve(response);
 			})
 		})
 		req.on('error', (e) => {
