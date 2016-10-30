@@ -4,8 +4,8 @@ var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			hostname: 'localhost',
-			port: 3030,	//TODO: read from config
-			path: params.apiEndpoint,
+			port: 3000,	//TODO: read from config
+			path: '/api' + params.apiEndpoint,
 			method: params.httpMethod,
 			headers: {
 	//			'Access-Control-Allow-Origin': 'http://localhost:3030',
