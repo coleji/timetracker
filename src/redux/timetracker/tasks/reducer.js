@@ -48,6 +48,12 @@ export default function(state = DEFAULT_STATE, action) {
 					return newObj;
 				})
 			};
+		case "DELETE_PUNCH_OPTIMISTIC":
+			return {
+				punches : state.punches.filter(p => {
+					return p.punchID != action.punchID;
+				})
+			};
 		case "PUNCH_EXISTING_TASK_OPTIMISTIC":
 			var newPunchList = [{
 				taskName : action.taskName,

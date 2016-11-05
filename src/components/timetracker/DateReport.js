@@ -3,20 +3,21 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 import DateComponent from './DateComponent'
-import { updatePunch as updatePunchAction } from '../../redux/timetracker/tasks/action-creators'
+import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from '../../redux/timetracker/tasks/action-creators'
 import { sortPunches } from '../../util'
 
 const DateReport_Unwrapped = (props) => {
 	return <table cellSpacing="5">
 		<tbody>
 			<tr>
+				<th>Del</th>
 				<th>Punch ({moment().add(props.dayOffset, 'days').format('MM/DD/YYYY')})</th>
 				<th>Task ({props.punches.length})</th>
 				<th>Duration</th>
 				<th>Actions</th>
 			</tr>
 			{props.punches.sort(sortPunches).map(e =>
-				<DateComponent key={e.punchID} punch={e} updatePunch={props.updatePunch}/>
+				<DateComponent key={e.punchID} punch={e} updatePunch={props.updatePunch} deletePunch={props.deletePunch}/>
 			)}
 		</tbody>
 	</table>
@@ -32,6 +33,9 @@ const DateReport = connect(
 		return {
 			updatePunch: (punchID, punchDate, deltaMinutes) => {
 				updatePunchAction(dispatch, punchID, punchDate, deltaMinutes)
+			},
+			deletePunch: (punchID) => {
+				deletePunchAction(dispatch, punchID)
 			}
 		}
 	}

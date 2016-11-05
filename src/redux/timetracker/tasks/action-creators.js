@@ -98,9 +98,23 @@ var updatePunch = function(dispatch, punchID, punchDate, deltaMinutes) {
 	});
 }
 
+var deletePunch = function(dispatch, punchID) {
+	var newTaskPromise = createActionFromAPIResponse({
+		httpMethod: 'POST',
+		apiEndpoint : '/deletePunch',
+		postData :  { punchID }
+	}).catch(e => console.log(e));
+
+	dispatch({
+		type: "DELETE_PUNCH_OPTIMISTIC",
+		punchID : punchID
+	});
+};
+
 export  {
 	getPunches,
 	newTask,
 	existingTask,
-	updatePunch
+	updatePunch,
+	deletePunch
 }

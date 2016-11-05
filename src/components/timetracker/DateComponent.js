@@ -18,7 +18,12 @@ class DateComponent extends React.Component {
 			this.refs.minutesInput.value = null
 		}
 
+		const deletePunch = () => {
+			this.props.deletePunch(this.props.punch.punchID);
+		}
+
 		return <tr>
+			<td> <a href="#" onClick={deletePunch}>Del</a> </td>
 			<td> {moment(this.props.punch.punchDate).format("MM/DD/YYYY hh:mmA")} </td>
 			<td> {this.props.punch.taskName } </td>
 			<td> {moment.duration(+this.props.punch.durationMillis).humanize()} </td>

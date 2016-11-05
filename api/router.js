@@ -2,6 +2,7 @@ import getPunches from './actions/getPunches';
 import newTask from './actions/newTask';
 import existingTask from './actions/existingTask'
 import updatePunch from './actions/updatePunch'
+import deletePunch from './actions/deletePunch'
 
 export default function(url, body) {
 	var urlComponents = url.split('/')
@@ -15,7 +16,9 @@ export default function(url, body) {
 	case "existingTask":
 		return existingTask(body.taskID, body.punchDate);
 	case "updatePunch":
-		return updatePunch(body.punchID, body.newDate)
+		return updatePunch(body.punchID, body.newDate);
+	case "deletePunch":
+		return deletePunch(body.punchID);
 	}
 	console.log("couldnt match url " + urlComponents[0])
 	return Promise.resolve({data: "API Success!"});
