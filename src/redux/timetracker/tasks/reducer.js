@@ -43,9 +43,9 @@ export default function(state = DEFAULT_STATE, action) {
 				punches : state.punches.map(p => {
 					var newObj = Object.assign({}, p);
 					if (p.punchID == action.punchID) {
-						p.punchDate = action.punchDate;
+						newObj.punchDate = action.punchDate;
 					}
-					return p;
+					return newObj;
 				})
 			};
 		case "PUNCH_EXISTING_TASK_OPTIMISTIC":
@@ -65,12 +65,14 @@ export default function(state = DEFAULT_STATE, action) {
 
 	// Sort and add durationMillis
 	if (newState.punches) newState.punches = newState.punches.sort(sortPunches).map((punch, i, punches) => {
-		var end = (function() {
-			if (i == 0) return moment();
+		let end = (function() {
+			if (i == 0) return moment().add((newState.dayOffset || state.dayOffset || 0), 'days');
 			else return moment(punches[i-1].punchDate);
 		}());
 
-		return Object.assign(punch, {durationMillis : end.diff(punch.punchDate) });
+		let diff = Math.max(0, end.diff(punch.punchDate)) // stomp on negative durations with 0
+
+		return Object.assign(punch, {durationMillis : diff});
 	})
 
 	// Get tasks from punches including total time per task

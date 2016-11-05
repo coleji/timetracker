@@ -21,6 +21,7 @@ class DateComponent extends React.Component {
 		return <tr>
 			<td> {moment(this.props.punch.punchDate).format("MM/DD/YYYY hh:mmA")} </td>
 			<td> {this.props.punch.taskName } </td>
+			<td> {moment.duration(+this.props.punch.durationMillis).humanize()} </td>
 			<td>
 				<input ref="minutesInput" type="text" size="5"
 					onKeyPress={mapToEnterPress(this,updatePunch)}>

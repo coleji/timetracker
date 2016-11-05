@@ -15,12 +15,12 @@ class AddPunch_Unwrapped extends React.Component {
 		const determineSubmitTypeAndSubmit = () => {
 			let doNewTask = (this.refs.newTaskName.value.length > 0);
 			let doExistingTask = (this.refs.existingTask.value != "");
-			if (doNewTask && !doExistingTask) this.props.punchNewTask(this.refs.newTaskName)
-			else if (!doNewTask && doExistingTask) this.props.punchExistingTask(this.refs.existingTask)
+			if (doNewTask && !doExistingTask) this.props.punchNewTask(this.refs.newTaskName, this.props.dayOffset)
+			else if (!doNewTask && doExistingTask) this.props.punchExistingTask(this.refs.existingTask, this.props.dayOffset)
 		};
 
 		const punchOut = () => {
-			this.props.punchExistingTask({ value : "-1_OUT" })
+			this.props.punchExistingTask({ value : "-1_OUT" }, this.props.dayOffset)
 		};
 
 		return <div>
@@ -68,11 +68,11 @@ const AddPunch = connect(
 				newTask(dispatch, newTaskName.value, dayOffset);
 				newTaskName.value = null;
 			},
-			punchExistingTask :  (existingTask) => {
-				existingTaskActionCreator(dispatch, existingTask.value);
+			punchExistingTask:  (existingTask, dayOffset) => {
+				existingTaskActionCreator(dispatch, existingTask.value, dayOffset);
 				existingTask.value = "";
 			},
-			updateDayOffset : (dayOffset) => {
+			updateDayOffset: (dayOffset) => {
 				getPunches(dispatch, dayOffset.value)
 			}
 		}

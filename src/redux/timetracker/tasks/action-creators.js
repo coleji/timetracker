@@ -28,7 +28,6 @@ var newTask = function(dispatch, taskName, dayOffset) {
 	let tempPunchID = asyncIDCounter--;
 	let tempTaskID = asyncIDCounter--;
 	let punchDate = moment().add(dayOffset, 'days');
-	console.log(taskName + "  " + punchDate)
 	var newTaskPromise = createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/newTask',
@@ -52,9 +51,9 @@ var newTask = function(dispatch, taskName, dayOffset) {
 	});
 }
 
-var existingTask = function(dispatch, taskIDAndName) {
+var existingTask = function(dispatch, taskIDAndName, dayOffset) {
 	let tempPunchID = asyncIDCounter--;
-	let punchDate = new Date();
+	let punchDate = moment().add(dayOffset, 'days');
 	let taskID = taskIDAndName.split("_")[0]
 	var arr = taskIDAndName.split("_")
 	arr.shift()

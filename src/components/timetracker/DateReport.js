@@ -12,6 +12,7 @@ const DateReport_Unwrapped = (props) => {
 			<tr>
 				<th>Punch ({moment().add(props.dayOffset, 'days').format('MM/DD/YYYY')})</th>
 				<th>Task ({props.punches.length})</th>
+				<th>Duration</th>
 				<th>Actions</th>
 			</tr>
 			{props.punches.sort(sortPunches).map(e =>
