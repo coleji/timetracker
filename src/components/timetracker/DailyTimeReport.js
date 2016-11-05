@@ -6,6 +6,7 @@ import { roundToDecimalPlaces } from '../../util'
 const DailyTimeReport_Unwrapped = (props) => {
 	const getTimePerTask = () => {
 		var taskHash = props.punches.reduce((prev, punch) => {
+			if (punch.taskID == -1) return prev;
 			if (undefined === prev[String(punch.taskID)]) {
 				prev[String(punch.taskID)] = {
 					taskName: punch.taskName,

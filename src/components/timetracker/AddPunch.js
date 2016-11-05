@@ -19,6 +19,10 @@ class AddPunch_Unwrapped extends React.Component {
 			else if (!doNewTask && doExistingTask) this.props.punchExistingTask(this.refs.existingTask)
 		};
 
+		const punchOut = () => {
+			this.props.punchExistingTask({ value : "-1_OUT" })
+		};
+
 		return <div>
 			<input size={7} onKeyPress={mapToEnterPress(
 				this,
@@ -41,6 +45,8 @@ class AddPunch_Unwrapped extends React.Component {
 				)}
 			</select>
 			<a href="#" onClick={determineSubmitTypeAndSubmit} >Punch </a>
+			&nbsp;&nbsp;
+			<a href="#" onClick={punchOut} >Out </a>
 		</div>
 	}
 }
