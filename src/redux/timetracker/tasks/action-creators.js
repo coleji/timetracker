@@ -2,6 +2,7 @@ import moment from 'moment'
 moment().format();
 
 import { createActionFromAPIResponse } from '../../../api-client'
+import { sortPunches } from '../../../util'
 
 var asyncIDCounter = -1;
 
@@ -12,10 +13,10 @@ var getPunches = function(dispatch, dayOffset) {
 		stateItemName : 'punches'
 	}).then((punches) => {
 		punches = punches || []
-		punches.forEach(e => { e.punchDate = new Date(e.punchDate) });
+		punches.forEach(e => { e.punchDate = moment(e.punchDate) });
 		dispatch({
 			type: "GET_PUNCHES",
-			punches,
+			punches : punches.sort(sortPunches),
 			dayOffset
 		});
 	}).catch(e => {
