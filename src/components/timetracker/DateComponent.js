@@ -9,11 +9,14 @@ class DateComponent extends React.Component {
 		super()
 	}
 	render() {
-		const updatePunch = () => this.props.updatePunch(
-			this.props.punch.punchID,
-			this.props.punch.punchDate,
-			this.refs.minutesInput.value
-		);
+		const updatePunch = () => {
+			this.props.updatePunch(
+				this.props.punch.punchID,
+				this.props.punch.punchDate,
+				this.refs.minutesInput.value
+			);
+			this.refs.minutesInput.value = null
+		}
 
 		return <tr>
 			<td> {moment(this.props.punch.punchDate).format("MM/DD/YYYY hh:mmA")} </td>
