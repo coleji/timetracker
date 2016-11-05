@@ -23,6 +23,10 @@ const DailyTimeReport_Unwrapped = (props) => {
 		return result
 	};
 
+	let totalSeconds = getTimePerTask().reduce((prev, e) => {
+		return prev += e.seconds
+	}, 0);
+
 	return <table cellSpacing="5">
 		<tbody>
 			<tr>
@@ -38,7 +42,14 @@ const DailyTimeReport_Unwrapped = (props) => {
 				</td><td>
 					{roundToDecimalPlaces((e.seconds / (60 * 60)),2)}
 				</td></tr>
-			 )}
+			)}
+			<tr><td>
+				<b>Total:</b>
+			</td><td>
+				{roundToDecimalPlaces((totalSeconds / 60),2)}
+			</td><td>
+				{roundToDecimalPlaces((totalSeconds / (60 * 60)),2)}
+			</td></tr>
 		</tbody>
 	</table>
 };
