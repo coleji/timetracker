@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import DateComponent from './DateComponent'
 import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from '../../redux/timetracker/tasks/action-creators'
-import { sortPunches } from '../../util'
+import { sortPunches } from '../../node-util'
 
 const DateReport_Unwrapped = (props) => {
 	return <table cellSpacing="5">

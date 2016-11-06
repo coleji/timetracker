@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 moment().format();
 
-import { mapToEnterPress } from '../../util'
+import { mapToEnterPress } from '../../node-util'
 
 class DateComponent extends React.Component {
 	constructor() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { roundToDecimalPlaces, sortPunches } from '../../util'
+import { roundToDecimalPlaces, sortPunches } from '../../node-util'
 
 const DailyTimeReport_Unwrapped = (props) => {
 	let totalTimeMillis = props.tasks.reduce(((total, task) => total + task.totalTimeMillis), 0)

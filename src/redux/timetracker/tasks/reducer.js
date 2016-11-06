@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { sortPunches } from '../../../util'
+import { sortPunches } from '../../../node-util'
 
 moment().format();
 

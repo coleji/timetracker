@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { newTask, existingTask as existingTaskActionCreator, getPunches } from '../../redux/timetracker/tasks/action-creators'
-import { mapToEnterPress } from '../../util'
+import { mapToEnterPress } from '../../node-util'
 
 class AddPunch_Unwrapped extends React.Component {
 	constructor() {
