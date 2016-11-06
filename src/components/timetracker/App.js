@@ -1,32 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { connect } from 'react-redux'
 
 import reducer from '../../redux/timetracker/'
 import DateReport from './DateReport'
-import { getPunches } from '../../redux/timetracker/tasks/action-creators'
+import { getPunches as getPunchesAction } from '../../redux/timetracker/tasks/action-creators'
 import AddPunch from './AddPunch'
 import DailyTimeReport from './DailyTimeReport'
 
-let store = createStore(reducer);
+@connect(
+	state => {
+		return {}
+	},
+	dispatch => { return {
+		getPunches: (dayOffset) => {
+			getPunchesAction(dispatch, dayOffset)
+		}
+	}}
+)
 class App extends React.Component {
 	constructor() {
 		super()
 	}
 	componentDidMount() {
-		getPunches(store.dispatch, 0)
+		this.props.getPunches(0)
 	}
 	render() {
 		return (
-			<Provider store={store}>
-				<table ><tbody><tr style={{verticalAlign: 'top'}}><td>
-					<AddPunch />
-					<DateReport />
-				</td><td width="20%"></td><td>
-					<DailyTimeReport />
-				</td></tr></tbody></table>
-			</Provider>
+			<table ><tbody><tr style={{verticalAlign: 'top'}}><td>
+				<AddPunch />
+				<DateReport />
+			</td><td width="20%"></td><td>
+				<DailyTimeReport />
+			</td></tr></tbody></table>
 		);
 	}
 }
