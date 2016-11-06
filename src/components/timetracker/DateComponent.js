@@ -1,12 +1,12 @@
-import React from 'react'
-import moment from 'moment'
+import React from 'react';
+import moment from 'moment';
 moment().format();
 
-import { mapToEnterPress } from '../../node-util'
+import { mapToEnterPress } from '../../node-util';
 
 class DateComponent extends React.Component {
 	constructor() {
-		super()
+		super();
 	}
 	render() {
 		const updatePunch = () => {
@@ -15,16 +15,16 @@ class DateComponent extends React.Component {
 				this.props.punch.punchDate,
 				this.refs.minutesInput.value
 			);
-			this.refs.minutesInput.value = null
-		}
+			this.refs.minutesInput.value = null;
+		};
 
 		const deletePunch = () => {
 			this.props.deletePunch(this.props.punch.punchID);
-		}
+		};
 
 		return <tr>
 			<td> <a href="#" onClick={deletePunch}>Del</a> </td>
-			<td> {moment(this.props.punch.punchDate).format("MM/DD/YYYY hh:mmA")} </td>
+			<td> {moment(this.props.punch.punchDate).format('MM/DD/YYYY hh:mmA')} </td>
 			<td> {this.props.punch.taskName } </td>
 			<td> {moment.duration(+this.props.punch.durationMillis).humanize()} </td>
 			<td>
@@ -34,8 +34,8 @@ class DateComponent extends React.Component {
 				&nbsp;
 				<a href="#" onClick={updatePunch}>Update</a>
 			</td>
-		</tr>
+		</tr>;
 	}
 }
 
-export default DateComponent
+export default DateComponent;

@@ -1,16 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
+import React, { Component, PropTypes } from 'react';//eslint-disable-line no-unused-vars
+import { connect } from 'react-redux';//eslint-disable-line no-unused-vars
 import Helmet from 'react-helmet';
-import { routeActions } from 'react-router-redux';
+import { routeActions } from 'react-router-redux';//eslint-disable-line no-unused-vars
 import config from '../../config';
-import { asyncConnect } from 'redux-async-connect';
+import { asyncConnect } from 'redux-async-connect';//eslint-disable-line no-unused-vars
 
-import Timetracker from '../../components/timetracker/App'
+import Timetracker from '../../components/timetracker/App';
 
 @asyncConnect([{
 	promise: () => {

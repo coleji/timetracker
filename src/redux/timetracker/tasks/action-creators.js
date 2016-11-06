@@ -1,8 +1,8 @@
-import moment from 'moment'
+import moment from 'moment';
 moment().format();
 
-import { createActionFromAPIResponse } from '../../../api-client'
-import { sortPunches } from '../../../node-util'
+import { createActionFromAPIResponse } from '../../../api-client';
+import { sortPunches } from '../../../node-util';
 
 var asyncIDCounter = -1;
 
@@ -12,15 +12,15 @@ var getPunches = function(dispatch, dayOffset) {
 		apiEndpoint : '/getPunches/' + dayOffset,
 		stateItemName : 'punches'
 	}).then((punches) => {
-		punches = punches || []
-		punches.forEach(e => { e.punchDate = moment(e.punchDate) });
+		punches = punches || [];
+		punches.forEach(e => { e.punchDate = moment(e.punchDate); });
 		dispatch({
-			type: "GET_PUNCHES",
+			type: 'GET_PUNCHES',
 			punches : punches.sort(sortPunches),
 			dayOffset
 		});
 	}).catch(e => {
-		console.log(e)
+		console.log(e);
 	});
 };
 
@@ -28,85 +28,85 @@ var newTask = function(dispatch, taskName, dayOffset) {
 	let tempPunchID = asyncIDCounter--;
 	let tempTaskID = asyncIDCounter--;
 	let punchDate = moment().add(dayOffset, 'days');
-	var newTaskPromise = createActionFromAPIResponse({
+	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/newTask',
 		postData :  { taskName, punchDate }
 	}).then(punch => {
 		dispatch({
-			type: "PUNCH_NEW_TASK_DB_RETURN",
+			type: 'PUNCH_NEW_TASK_DB_RETURN',
 			tempPunchID,
 			tempTaskID,
 			punchID : punch.punchID,
 			taskID : punch.taskID
-		})
+		});
 	});
 
 	dispatch({
-		type: "PUNCH_NEW_TASK_OPTIMISTIC",
+		type: 'PUNCH_NEW_TASK_OPTIMISTIC',
 		taskName,
 		punchDate,
 		tempTaskID,
 		tempPunchID
 	});
-}
+};
 
 var existingTask = function(dispatch, taskIDAndName, dayOffset) {
 	let tempPunchID = asyncIDCounter--;
 	let punchDate = moment().add(dayOffset, 'days');
-	let taskID = taskIDAndName.split("_")[0]
-	var arr = taskIDAndName.split("_")
-	arr.shift()
-	let taskName = arr.join("_")
+	let taskID = taskIDAndName.split('_')[0];
+	var arr = taskIDAndName.split('_');
+	arr.shift();
+	let taskName = arr.join('_');
 
-	var newTaskPromise = createActionFromAPIResponse({
+	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/existingTask',
 		postData :  { taskID, punchDate }
 	}).then(punch => {
 		dispatch({
-			type: "PUNCH_EXISTING_TASK_DB_RETURN",
+			type: 'PUNCH_EXISTING_TASK_DB_RETURN',
 			tempPunchID,
 			punchID : punch.punchID,
-		})
+		});
 	});
 
 	dispatch({
-		type: "PUNCH_EXISTING_TASK_OPTIMISTIC",
+		type: 'PUNCH_EXISTING_TASK_OPTIMISTIC',
 		tempPunchID,
 		punchDate,
 		taskID,
 		taskName
 	});
-}
+};
 
 var updatePunch = function(dispatch, punchID, punchDate, deltaMinutes) {
 	if (isNaN(deltaMinutes)) return;
 
-	let newDate = moment(punchDate).add(+deltaMinutes,'minutes')
+	let newDate = moment(punchDate).add(+deltaMinutes,'minutes');
 
-	var newTaskPromise = createActionFromAPIResponse({
+	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/updatePunch',
 		postData :  { punchID, newDate }
 	}).catch(e => console.log(e));
 
 	dispatch({
-		type: "UPDATE_PUNCH_OPTIMISTIC",
+		type: 'UPDATE_PUNCH_OPTIMISTIC',
 		punchID : punchID,
 		punchDate : newDate
 	});
-}
+};
 
 var deletePunch = function(dispatch, punchID) {
-	var newTaskPromise = createActionFromAPIResponse({
+	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/deletePunch',
 		postData :  { punchID }
 	}).catch(e => console.log(e));
 
 	dispatch({
-		type: "DELETE_PUNCH_OPTIMISTIC",
+		type: 'DELETE_PUNCH_OPTIMISTIC',
 		punchID : punchID
 	});
 };
@@ -117,4 +117,4 @@ export  {
 	existingTask,
 	updatePunch,
 	deletePunch
-}
+};

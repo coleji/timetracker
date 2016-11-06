@@ -1,12 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux'; //eslint-disable-line no-unused-vars
 
-import reducer from '../../redux/timetracker/'
-import DateReport from './DateReport'
-import { getPunches as getPunchesAction } from '../../redux/timetracker/tasks/action-creators'
-import AddPunch from './AddPunch'
-import DailyTimeReport from './DailyTimeReport'
+import DateReport from './DateReport';
+import { getPunches as getPunchesAction } from '../../redux/timetracker/tasks/action-creators';//eslint-disable-line no-unused-vars
+import AddPunch from './AddPunch';
+import DailyTimeReport from './DailyTimeReport';
 
 @connect(
 	state => {
@@ -20,10 +18,10 @@ import DailyTimeReport from './DailyTimeReport'
 )
 class App extends React.Component {
 	constructor() {
-		super()
+		super();
 	}
 	componentDidMount() {
-		this.props.getPunches(0)
+		this.props.getPunches(0);
 	}
 	render() {
 		return (

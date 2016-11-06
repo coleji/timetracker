@@ -1,7 +1,7 @@
 /*eslint no-console: "off" */
 
 import Express from 'express';
-import React from 'react';
+import React from 'react';//eslint-disable-line no-unused-vars
 import ReactDOM from 'react-dom/server';
 import config from './config';
 import compression from 'compression';

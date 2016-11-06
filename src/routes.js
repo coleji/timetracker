@@ -1,5 +1,5 @@
-import React from 'react';
-import {IndexRoute, Route} from 'react-router';
+import React from 'react';//eslint-disable-line no-unused-vars
+import {Route} from 'react-router';
 import { App, NotFound } from 'containers';
 
 export default () => {

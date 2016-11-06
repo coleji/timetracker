@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux'
+import React from 'react'; //eslint-disable-line no-unused-vars
+import { connect } from 'react-redux';
 
-import { roundToDecimalPlaces, sortPunches } from '../../node-util'
+import { roundToDecimalPlaces } from '../../node-util';
 
 const DailyTimeReport_Unwrapped = (props) => {
-	let totalTimeMillis = props.tasks.reduce(((total, task) => total + task.totalTimeMillis), 0)
+	let totalTimeMillis = props.tasks.reduce(((total, task) => total + task.totalTimeMillis), 0);
 
 	return <table cellSpacing="5">
 		<tbody>
@@ -30,14 +30,14 @@ const DailyTimeReport_Unwrapped = (props) => {
 				{roundToDecimalPlaces(totalTimeMillis / (1000 * 60),2)}
 			</td></tr>
 		</tbody>
-	</table>
+	</table>;
 };
 
 const DailyTimeReport = connect(
 	// mapStateToProps
 	state => {
-		return {tasks: state.punchData.tasks}
+		return {tasks: state.punchData.tasks};
 	}
-)(DailyTimeReport_Unwrapped)
+)(DailyTimeReport_Unwrapped);
 
-export default DailyTimeReport
+export default DailyTimeReport;

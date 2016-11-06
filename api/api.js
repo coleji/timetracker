@@ -5,7 +5,7 @@ import http from 'http';
 import SocketIo from 'socket.io';
 
 import config from '../src/config';
-import router from './router'
+import router from './router';
 const app = express();
 
 const server = new http.Server(app);
@@ -22,8 +22,8 @@ app.use(session({
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-	if (req.method != "OPTIONS") {
-		next()
+	if (req.method != 'OPTIONS') {
+		next();
 		return;
 	}
 	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
@@ -32,8 +32,8 @@ app.use((req, res, next) => {
 		'Content-Type',
 		'Content-Length'
 	].join(','));
-	res.status(200).end()
-})
+	res.status(200).end();
+});
 
 app.use((req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
@@ -41,18 +41,18 @@ app.use((req, res) => {
 	router(req.url, req.body).then(data => {
 		res.send({data : data});
 	}).catch(err => {
-		console.log(err)
+		console.error(err);
 		res.status(404).end('NOT FOUND');
-	})
+	});
 });
 
-
+/*
 const bufferSize = 100;
 const messageBuffer = new Array(bufferSize);
 let messageIndex = 0;
-
+*/
 if (config.apiPort) {
-	const runnable = app.listen(config.apiPort, (err) => {
+	/*const runnable =*/ app.listen(config.apiPort, (err) => {
 		if (err) {
 			console.error(err);
 		}

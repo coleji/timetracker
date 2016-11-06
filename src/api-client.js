@@ -1,5 +1,5 @@
-import http from 'http'
-import config from './config'
+import http from 'http';
+import config from './config';
 
 var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {
@@ -8,12 +8,7 @@ var makeAPIRequest = function(params) {
 			port: config.port,
 			path: '/api' + params.apiEndpoint,
 			method: params.httpMethod,
-			headers: {
-	//			'Access-Control-Allow-Origin': 'http://localhost:3030',
-	//			'Access-Control-Allow-Credentials' : 'true',
-	//			'Access-Control-Allow-Methods' : 'GET, POST',
-	//			'Access-Control-Allow-Headers' : 'Access-Control-Allow-Origin,Access-Control-Allow-Credentials,Access-Control-Allow-Methods,Content-Type,Content-Length'
-			}
+			headers: { }
 		};
 		if (params.httpMethod == 'POST') {
 			options.headers['Content-Type'] = 'application/json';
@@ -21,15 +16,15 @@ var makeAPIRequest = function(params) {
 		}
 
 		let req = http.request(options, (res) => {
-			let resData = ""
+			let resData = '';
 			res.on('data', (chunk) => {
 				resData += chunk;
 			});
 			res.on('end', () => {
-				let response = JSON.parse(resData)
+				let response = JSON.parse(resData);
 				resolve(response);
-			})
-		})
+			});
+		});
 		req.on('error', (e) => {
 			reject(e);
 		});
@@ -38,7 +33,7 @@ var makeAPIRequest = function(params) {
 			req.write(JSON.stringify(params.postData));
 		}
 		req.end();
-	})
+	});
 };
 
 var createActionFromAPIResponse = function(params) {
@@ -51,11 +46,11 @@ var createActionFromAPIResponse = function(params) {
 		.then((json) => {
 			let data = json.data;
 			if (params.dataForEach) data.forEach(params.dataForEach);
-			resolve(data)
+			resolve(data);
 		}).catch((e) => {
 			reject(e);
 		});
-	})
+	});
 };
 
 export {

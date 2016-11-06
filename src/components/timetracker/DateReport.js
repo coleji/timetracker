@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux'
-import moment from 'moment'
+import React from 'react'; //eslint-disable-line no-unused-vars
+import { connect } from 'react-redux';
+import moment from 'moment';
 
-import DateComponent from './DateComponent'
-import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from '../../redux/timetracker/tasks/action-creators'
-import { sortPunches } from '../../node-util'
+import DateComponent from './DateComponent';
+import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from '../../redux/timetracker/tasks/action-creators';
+import { sortPunches } from '../../node-util';
 
 const DateReport_Unwrapped = (props) => {
 	return <table cellSpacing="5">
@@ -20,25 +20,25 @@ const DateReport_Unwrapped = (props) => {
 				<DateComponent key={e.punchID} punch={e} updatePunch={props.updatePunch} deletePunch={props.deletePunch}/>
 			)}
 		</tbody>
-	</table>
+	</table>;
 };
 
 const DateReport = connect(
 	// mapStateToProps
 	state => {
-		return {punches: state.punchData.punches, dayOffset : state.punchData.dayOffset}
+		return {punches: state.punchData.punches, dayOffset : state.punchData.dayOffset};
 	},
 	// mapDispathToProps
 	dispatch => {
 		return {
 			updatePunch: (punchID, punchDate, deltaMinutes) => {
-				updatePunchAction(dispatch, punchID, punchDate, deltaMinutes)
+				updatePunchAction(dispatch, punchID, punchDate, deltaMinutes);
 			},
 			deletePunch: (punchID) => {
-				deletePunchAction(dispatch, punchID)
+				deletePunchAction(dispatch, punchID);
 			}
-		}
+		};
 	}
-)(DateReport_Unwrapped)
+)(DateReport_Unwrapped);
 
-export default DateReport
+export default DateReport;

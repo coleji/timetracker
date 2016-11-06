@@ -1,25 +1,25 @@
 import getPunches from './actions/getPunches';
 import newTask from './actions/newTask';
-import existingTask from './actions/existingTask'
-import updatePunch from './actions/updatePunch'
-import deletePunch from './actions/deletePunch'
+import existingTask from './actions/existingTask';
+import updatePunch from './actions/updatePunch';
+import deletePunch from './actions/deletePunch';
 
 export default function(url, body) {
-	var urlComponents = url.split('/')
-	if (urlComponents[0] == "") urlComponents.splice(0,1); // may or may not start with a /
+	var urlComponents = url.split('/');
+	if (urlComponents[0] == '') urlComponents.splice(0,1); // may or may not start with a /
 
 	switch (urlComponents[0]) {
-	case "getPunches":
+	case 'getPunches':
 		return getPunches(urlComponents[1]);
-	case "newTask":
+	case 'newTask':
 		return newTask(body.taskName, body.punchDate);
-	case "existingTask":
+	case 'existingTask':
 		return existingTask(body.taskID, body.punchDate);
-	case "updatePunch":
+	case 'updatePunch':
 		return updatePunch(body.punchID, body.newDate);
-	case "deletePunch":
+	case 'deletePunch':
 		return deletePunch(body.punchID);
 	}
-	console.log("couldnt match url " + urlComponents[0])
-	return Promise.resolve({data: "API Success!"});
+	console.log('couldnt match url ' + urlComponents[0]);
+	return Promise.resolve({data: 'API Success!'});
 }

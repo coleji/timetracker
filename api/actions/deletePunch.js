@@ -1,16 +1,14 @@
-import db from '../mysql.js'
-//import moment from 'moment'
-import moment from 'moment-timezone'
+import db from '../mysql.js';
 
 export default function(punchID) {
 	return new Promise((resolve, reject) => {
 		db.query(
-			"delete from punches where punch_id = ?",[
+			'delete from punches where punch_id = ?',[
 				punchID
 			],
-		function(err, result) {
+		function(err) {
 			if (err) reject(err);
 			else resolve();
 		});
-	})
+	});
 }
