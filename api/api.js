@@ -6,7 +6,6 @@ import SocketIo from 'socket.io';
 
 import config from '../src/config';
 import router from './router'
-console.log(config)
 const app = express();
 
 const server = new http.Server(app);

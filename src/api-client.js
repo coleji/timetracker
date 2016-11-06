@@ -27,7 +27,6 @@ var makeAPIRequest = function(params) {
 			});
 			res.on('end', () => {
 				let response = JSON.parse(resData)
-				console.log(response)
 				resolve(response);
 			})
 		})
@@ -36,8 +35,6 @@ var makeAPIRequest = function(params) {
 		});
 
 		if (params.httpMethod == 'POST') {
-			console.log("posting!!")
-			console.log(params.postData)
 			req.write(JSON.stringify(params.postData));
 		}
 		req.end();
