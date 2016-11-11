@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux';
 
-import punchData from './tasks/reducer';
-import dayOffset from './dayOffset/reducer';
+import punchData from './reducer';
 
 var reducer = combineReducers({
-	punchData,
-	dayOffset
+	punchData
 });
 
 export default reducer;

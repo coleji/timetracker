@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'; //eslint-disable-line no-unused-vars
 
 import DateReport from './DateReport';
-import { getPunches as getPunchesAction } from './redux/tasks/action-creators';//eslint-disable-line no-unused-vars
+import { getPunches as getPunchesAction } from './redux/action-creators';//eslint-disable-line no-unused-vars
 import AddPunch from './AddPunch';
 import DailyTimeReport from './DailyTimeReport';
 

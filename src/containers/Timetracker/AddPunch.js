@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { newTask, existingTask as existingTaskActionCreator, getPunches } from './redux/tasks/action-creators';
+import { newTask, existingTask as existingTaskActionCreator, getPunches } from './redux/action-creators';
 import { mapToEnterPress } from '../../app-util';
 
 @connect(

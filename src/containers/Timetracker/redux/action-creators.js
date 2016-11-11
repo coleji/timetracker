@@ -1,8 +1,8 @@
 import moment from 'moment';
 moment().format();
 
-import { createActionFromAPIResponse } from '../../../../../core/api-client';
-import { sortPunches } from '../../../../app-util';
+import { createActionFromAPIResponse } from '../../../../core/api-client';
+import { sortPunches } from '../../../app-util';
 
 var asyncIDCounter = -1;
 

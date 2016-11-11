@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { sortPunches } from '../../../../app-util';
+import { sortPunches } from '../../../app-util';
 
 moment().format();
 
