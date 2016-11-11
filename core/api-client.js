@@ -1,5 +1,5 @@
 import http from 'http';
-import config from './config';
+import config from '../src/config';
 
 var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {

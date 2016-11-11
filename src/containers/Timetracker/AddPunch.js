@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { newTask, existingTask as existingTaskActionCreator, getPunches } from '../redux/timetracker/tasks/action-creators';
-import { mapToEnterPress } from '../node-util';
+import { newTask, existingTask as existingTaskActionCreator, getPunches } from './redux/tasks/action-creators';
+import { mapToEnterPress } from '../../app-util';
 
 @connect(
 	// mapStateToProps

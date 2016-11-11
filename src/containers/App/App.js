@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react';//eslint-disable-line no-unu
 import { connect } from 'react-redux';//eslint-disable-line no-unused-vars
 import Helmet from 'react-helmet';
 import { routeActions } from 'react-router-redux';//eslint-disable-line no-unused-vars
-import config from '../../config';
 import { asyncConnect } from 'redux-async-connect';//eslint-disable-line no-unused-vars
 
-import Timetracker from '../../components/Timetracker';
+import Timetracker from '../Timetracker';
+import config from '../../config';
 
 @asyncConnect([{
 	promise: () => {

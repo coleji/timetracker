@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import DateComponent from './DateComponent';
-import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from '../redux/timetracker/tasks/action-creators';
-import { sortPunches } from '../node-util';
+import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from './redux/tasks/action-creators';
+import { sortPunches } from '../../app-util';
 
 @connect(
 	// mapStateToProps

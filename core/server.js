@@ -3,21 +3,21 @@
 import Express from 'express';
 import React from 'react';//eslint-disable-line no-unused-vars
 import ReactDOM from 'react-dom/server';
-import config from './config';
 import compression from 'compression';
 import httpProxy from 'http-proxy';
 import path from 'path';
-import createStore from './redux/create';
-import ApiClient from './helpers/ApiClient';
-import Html from './helpers/Html';
-import PrettyError from 'pretty-error';
-import http from 'http';
-
 import { match } from 'react-router';
 import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
-import getRoutes from './routes';
+import PrettyError from 'pretty-error';
+import http from 'http';
+
+import getRoutes from '../src/routes';
+import config from '../src/config';
+import createStore from './create';
+import ApiClient from './ApiClient';
+import Html from './Html';
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();

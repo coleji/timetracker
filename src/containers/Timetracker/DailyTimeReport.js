@@ -1,7 +1,7 @@
 import React from 'react'; //eslint-disable-line no-unused-vars
 import { connect } from 'react-redux';
 
-import { roundToDecimalPlaces } from '../node-util';
+import { roundToDecimalPlaces } from '../../app-util';
 
 const DailyTimeReport = (props) => {
 	let totalTimeMillis = props.tasks.reduce(((total, task) => total + task.totalTimeMillis), 0);
