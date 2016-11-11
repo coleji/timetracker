@@ -1,6 +1,8 @@
 import React from 'react';//eslint-disable-line no-unused-vars
 import {Route} from 'react-router';
-import { App, NotFound } from 'containers';
+
+import App from './containers/App';
+import NotFound from './containers/NotFound';
 
 export default () => {
 	return (
