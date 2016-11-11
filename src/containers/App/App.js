@@ -5,7 +5,7 @@ import { routeActions } from 'react-router-redux';//eslint-disable-line no-unuse
 import config from '../../config';
 import { asyncConnect } from 'redux-async-connect';//eslint-disable-line no-unused-vars
 
-import Timetracker from '../../components/timetracker/App';
+import Timetracker from '../../components/Timetracker';
 
 @asyncConnect([{
 	promise: () => {

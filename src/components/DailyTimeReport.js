@@ -1,9 +1,9 @@
 import React from 'react'; //eslint-disable-line no-unused-vars
 import { connect } from 'react-redux';
 
-import { roundToDecimalPlaces } from '../../node-util';
+import { roundToDecimalPlaces } from '../node-util';
 
-const DailyTimeReport_Unwrapped = (props) => {
+const DailyTimeReport = (props) => {
 	let totalTimeMillis = props.tasks.reduce(((total, task) => total + task.totalTimeMillis), 0);
 
 	return <table cellSpacing="5">
@@ -33,11 +33,9 @@ const DailyTimeReport_Unwrapped = (props) => {
 	</table>;
 };
 
-const DailyTimeReport = connect(
+export default connect(
 	// mapStateToProps
 	state => {
 		return {tasks: state.punchData.tasks};
 	}
-)(DailyTimeReport_Unwrapped);
-
-export default DailyTimeReport;
+)(DailyTimeReport);

@@ -2,21 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux'; //eslint-disable-line no-unused-vars
 
 import DateReport from './DateReport';
-import { getPunches as getPunchesAction } from '../../redux/timetracker/tasks/action-creators';//eslint-disable-line no-unused-vars
+import { getPunches as getPunchesAction } from '../redux/timetracker/tasks/action-creators';//eslint-disable-line no-unused-vars
 import AddPunch from './AddPunch';
 import DailyTimeReport from './DailyTimeReport';
 
 @connect(
-	state => {
-		return {}
-	},
-	dispatch => { return {
+	() => ({}),
+	dispatch => ({
 		getPunches: (dayOffset) => {
-			getPunchesAction(dispatch, dayOffset)
+			getPunchesAction(dispatch, dayOffset);
 		}
-	}}
+	})
 )
-class App extends React.Component {
+class Timetracker extends React.Component {
 	constructor() {
 		super();
 	}
@@ -35,4 +33,4 @@ class App extends React.Component {
 	}
 }
 
-module.exports = App;
+module.exports = Timetracker;

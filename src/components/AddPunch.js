@@ -1,10 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { newTask, existingTask as existingTaskActionCreator, getPunches } from '../../redux/timetracker/tasks/action-creators';
-import { mapToEnterPress } from '../../node-util';
+import { newTask, existingTask as existingTaskActionCreator, getPunches } from '../redux/timetracker/tasks/action-creators';
+import { mapToEnterPress } from '../node-util';
 
-class AddPunch_Unwrapped extends React.Component {
+@connect(
+	// mapStateToProps
+	state => {
+		return {
+			punches: state.punchData.punches,
+			tasks: state.punchData.tasks,
+			dayOffset : state.punchData.dayOffset
+		};
+	},
+	// mapDispathToProps
+	dispatch => {
+		return {
+			punchNewTask: (newTaskName, dayOffset) => {
+				if (newTaskName.value.length == 0) return;
+				newTask(dispatch, newTaskName.value, dayOffset);
+				newTaskName.value = null;
+			},
+			punchExistingTask:  (existingTask, dayOffset) => {
+				existingTaskActionCreator(dispatch, existingTask.value, dayOffset);
+				existingTask.value = '';
+			},
+			updateDayOffset: (dayOffset) => {
+				getPunches(dispatch, dayOffset.value);
+			}
+		};
+	}
+)
+class AddPunch extends React.Component {
 	constructor() {
 		super();
 	}
@@ -50,33 +77,5 @@ class AddPunch_Unwrapped extends React.Component {
 		</div>;
 	}
 }
-
-const AddPunch = connect(
-	// mapStateToProps
-	state => {
-		return {
-			punches: state.punchData.punches,
-			tasks: state.punchData.tasks,
-			dayOffset : state.punchData.dayOffset
-		};
-	},
-	// mapDispathToProps
-	dispatch => {
-		return {
-			punchNewTask: (newTaskName, dayOffset) => {
-				if (newTaskName.value.length == 0) return;
-				newTask(dispatch, newTaskName.value, dayOffset);
-				newTaskName.value = null;
-			},
-			punchExistingTask:  (existingTask, dayOffset) => {
-				existingTaskActionCreator(dispatch, existingTask.value, dayOffset);
-				existingTask.value = '';
-			},
-			updateDayOffset: (dayOffset) => {
-				getPunches(dispatch, dayOffset.value);
-			}
-		};
-	}
-)(AddPunch_Unwrapped);
 
 export default AddPunch;
