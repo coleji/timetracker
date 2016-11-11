@@ -27,7 +27,7 @@ const DailyTimeReport_Unwrapped = (props) => {
 			</td><td>
 				{roundToDecimalPlaces(totalTimeMillis / (1000 * 60),2)}
 			</td><td>
-				{roundToDecimalPlaces(totalTimeMillis / (1000 * 60),2)}
+				{roundToDecimalPlaces(totalTimeMillis / (1000 * 60 * 60),2)}
 			</td></tr>
 		</tbody>
 	</table>;
