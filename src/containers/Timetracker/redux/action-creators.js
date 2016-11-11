@@ -7,6 +7,8 @@ import { sortPunches } from '../../../app-util';
 var asyncIDCounter = -1;
 
 var getPunches = function(dispatch, dayOffset) {
+	if (isNaN(dayOffset)) dayOffset = 0;
+	else dayOffset = Number(dayOffset);
 	createActionFromAPIResponse({
 		httpMethod: 'GET',
 		apiEndpoint : '/getPunches/' + dayOffset,

@@ -10,6 +10,13 @@ const DEFAULT_STATE = {
 	dayOffset : 0
 };
 
+const coalesce = () => {
+	for (var i=0; i<arguments.length; i++) {
+		if (undefined != arguments[i]) return arguments[i];
+	}
+	return undefined;
+};
+
 export default function(state = DEFAULT_STATE, action) {
 	var newState = {};
 	Object.assign(newState, (function(action) {
@@ -70,7 +77,7 @@ export default function(state = DEFAULT_STATE, action) {
 	// Sort and add durationMillis
 	if (newState.punches) newState.punches = newState.punches.sort(sortPunches).map((punch, i, punches) => {
 		let end = (function() {
-			if (i == 0) return moment().add((newState.dayOffset || state.dayOffset || 0), 'days');
+			if (i == 0) return moment().add(coalesce(newState.dayOffset, state.dayOffset, 0), 'days');
 			else return moment(punches[i-1].punchDate);
 		}());
 
