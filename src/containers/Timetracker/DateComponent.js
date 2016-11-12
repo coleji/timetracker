@@ -23,7 +23,7 @@ class DateComponent extends React.Component {
 		};
 
 		return <tr>
-			<td> <a href="#" onClick={deletePunch}>Del</a> </td>
+			<td> <a href="#" onClick={deletePunch}>[{this.props.punch.punchID}]</a> </td>
 			<td> {moment(this.props.punch.punchDate).format('MM/DD/YYYY hh:mmA')} </td>
 			<td> {this.props.punch.taskName } </td>
 			<td> {moment.duration(+this.props.punch.durationMillis).humanize()} </td>

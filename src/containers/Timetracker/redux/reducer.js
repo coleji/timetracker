@@ -69,6 +69,15 @@ export default function(state = DEFAULT_STATE, action) {
 					taskID : action.taskID
 				}, ...state.punches]
 			};
+		case 'PUNCH_EXISTING_TASK_DB_RETURN':
+			return {
+				punches : state.punches.map(p => { return {
+					taskName : p.taskName,
+					punchDate : p.punchDate,
+					punchID : (p.punchID == action.tempPunchID) ? action.punchID : p.punchID,
+					taskID : p.taskID
+				};})
+			};
 		default:
 			return {};
 		}
