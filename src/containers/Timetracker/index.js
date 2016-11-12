@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'; //eslint-disable-line no-unused-vars
 
+import { Table } from 'react-bootstrap';
 import DateReport from './DateReport';
 import { getPunches as getPunchesAction } from './redux/action-creators';//eslint-disable-line no-unused-vars
 import AddPunch from './AddPunch';
@@ -23,12 +24,12 @@ class Timetracker extends React.Component {
 	}
 	render() {
 		return (
-			<table ><tbody><tr style={{verticalAlign: 'top'}}><td>
+			<Table ><tbody><tr style={{verticalAlign: 'top'}}><td>
 				<AddPunch />
 				<DateReport />
-			</td><td width="20%"></td><td>
+			</td><td>
 				<DailyTimeReport />
-			</td></tr></tbody></table>
+			</td><td></td></tr></tbody></Table>
 		);
 	}
 }

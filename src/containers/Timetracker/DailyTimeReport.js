@@ -1,12 +1,13 @@
 import React from 'react'; //eslint-disable-line no-unused-vars
 import { connect } from 'react-redux';
 
+import { Table } from 'react-bootstrap';
 import { roundToDecimalPlaces } from '../../app-util';
 
 const DailyTimeReport = (props) => {
 	let totalTimeMillis = props.tasks.reduce(((total, task) => total + task.totalTimeMillis), 0);
 
-	return <table cellSpacing="5">
+	return <Table striped bordered condensed hover cellSpacing="5">
 		<tbody>
 			<tr>
 				<th>Task</th>
@@ -30,7 +31,7 @@ const DailyTimeReport = (props) => {
 				{roundToDecimalPlaces(totalTimeMillis / (1000 * 60 * 60),2)}
 			</td></tr>
 		</tbody>
-	</table>;
+	</Table>;
 };
 
 export default connect(

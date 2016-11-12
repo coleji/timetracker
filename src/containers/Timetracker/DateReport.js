@@ -2,6 +2,7 @@ import React from 'react'; //eslint-disable-line no-unused-vars
 import { connect } from 'react-redux';
 import moment from 'moment';
 
+import { Table } from 'react-bootstrap';
 import DateComponent from './DateComponent';
 import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from './redux/action-creators';
 import { sortPunches } from '../../app-util';
@@ -25,7 +26,7 @@ import { sortPunches } from '../../app-util';
 )
 class DateReport extends React.Component {
 	render() {
-		return <table cellSpacing="5">
+		return <Table striped bordered condensed hover cellSpacing="5">
 			<tbody>
 				<tr>
 					<th>Del</th>
@@ -38,7 +39,7 @@ class DateReport extends React.Component {
 					<DateComponent key={e.punchID} punch={e} updatePunch={this.props.updatePunch} deletePunch={this.props.deletePunch}/>
 				)}
 			</tbody>
-		</table>;
+		</Table>;
 	}
 }
 
