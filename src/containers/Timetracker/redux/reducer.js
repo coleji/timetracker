@@ -1,13 +1,15 @@
 import moment from 'moment';
 
 import { sortPunches } from '../../../app-util';
+import { reducerModules as asyncReducers} from './async';
 
 moment().format();
 
 const DEFAULT_STATE = {
 	punches: [],
 	tasks : [],
-	dayOffset : 0
+	dayOffset : 0,
+	asyncIDCounter : -1
 };
 
 const coalesce = () => {
@@ -21,65 +23,11 @@ export default function(state = DEFAULT_STATE, action) {
 	var newState = {};
 	Object.assign(newState, (function(action) {
 		switch (action.type) {
-		case 'GET_PUNCHES':
-			return  {
-				punches: action.punches,
-				dayOffset : action.dayOffset
-			};
-		case 'PUNCH_NEW_TASK_OPTIMISTIC':
-			return {
-				punches : [{
-					taskName : action.taskName,
-					punchDate : action.punchDate,
-					punchID : action.tempPunchID,
-					taskID : action.tempTaskID
-				}, ...state.punches]
-			};
-		case 'PUNCH_NEW_TASK_DB_RETURN':
-			return {
-				punches : state.punches.map(p => { return {
-					taskName : p.taskName,
-					punchDate : p.punchDate,
-					punchID : (p.punchID == action.tempPunchID) ? action.punchID : p.punchID,
-					taskID : (p.taskID == action.tempTaskID) ? action.taskID : p.taskID
-				};})
-			};
-		case 'UPDATE_PUNCH_OPTIMISTIC':
-			return {
-				punches : state.punches.map(p => {
-					var newObj = Object.assign({}, p);
-					if (p.punchID == action.punchID) {
-						newObj.punchDate = action.punchDate;
-					}
-					return newObj;
-				})
-			};
-		case 'DELETE_PUNCH_OPTIMISTIC':
-			return {
-				punches : state.punches.filter(p => {
-					return p.punchID != action.punchID;
-				})
-			};
-		case 'PUNCH_EXISTING_TASK_OPTIMISTIC':
-			return {
-				punches : [{
-					taskName : action.taskName,
-					punchDate : action.punchDate,
-					punchID : action.tempPunchID,
-					taskID : action.taskID
-				}, ...state.punches]
-			};
-		case 'PUNCH_EXISTING_TASK_DB_RETURN':
-			return {
-				punches : state.punches.map(p => { return {
-					taskName : p.taskName,
-					punchDate : p.punchDate,
-					punchID : (p.punchID == action.tempPunchID) ? action.punchID : p.punchID,
-					taskID : p.taskID
-				};})
-			};
 		default:
-			return {};
+			if (undefined !== asyncReducers[action.type]) {
+				return asyncReducers[action.type](state, action);
+			}
+			else return {};
 		}
 	}(action)));
 

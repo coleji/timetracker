@@ -1,35 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { newTask, existingTask as existingTaskActionCreator, getPunches } from './redux/action-creators';
+import { asyncActions } from './redux/action-creators';
 import { mapToEnterPress } from '../../app-util';
 
 @connect(
 	// mapStateToProps
-	state => {
-		return {
-			punches: state.punchData.punches,
-			tasks: state.punchData.tasks,
-			dayOffset : state.punchData.dayOffset
-		};
-	},
+	state => ({
+		punches: state.punchData.punches,
+		tasks: state.punchData.tasks,
+		dayOffset : state.punchData.dayOffset,
+		asyncIDCounter : state.punchData.asyncIDCounter
+	}),
 	// mapDispathToProps
-	dispatch => {
-		return {
-			punchNewTask: (newTaskName, dayOffset) => {
-				if (newTaskName.value.length == 0) return;
-				newTask(dispatch, newTaskName.value, dayOffset);
-				newTaskName.value = null;
-			},
-			punchExistingTask:  (existingTask, dayOffset) => {
-				existingTaskActionCreator(dispatch, existingTask.value, dayOffset);
-				existingTask.value = '';
-			},
-			updateDayOffset: (dayOffset) => {
-				getPunches(dispatch, dayOffset.value);
-			}
-		};
-	}
+	dispatch => ({
+		punchNewTask: (newTaskName, dayOffset, asyncIDCounter) => {
+			if (newTaskName.value.length == 0) return;
+			asyncActions.newTask(dispatch, {taskName : newTaskName.value, dayOffset, asyncIDCounter});
+			newTaskName.value = null;
+		},
+		punchExistingTask:  (existingTask, dayOffset, asyncIDCounter) => {
+			asyncActions.existingTask(dispatch, {taskIDAndName : existingTask.value, dayOffset, asyncIDCounter});
+			existingTask.value = '';
+		},
+		updateDayOffset: (dayOffset) => {
+			asyncActions.getPunches(dispatch, {dayOffset : dayOffset.value});
+		}
+	})
 )
 class AddPunch extends React.Component {
 	constructor() {
@@ -42,12 +39,12 @@ class AddPunch extends React.Component {
 		const determineSubmitTypeAndSubmit = () => {
 			let doNewTask = (this.refs.newTaskName.value.length > 0);
 			let doExistingTask = (this.refs.existingTask.value != '');
-			if (doNewTask && !doExistingTask) this.props.punchNewTask(this.refs.newTaskName, this.props.dayOffset);
-			else if (!doNewTask && doExistingTask) this.props.punchExistingTask(this.refs.existingTask, this.props.dayOffset);
+			if (doNewTask && !doExistingTask) this.props.punchNewTask(this.refs.newTaskName, this.props.dayOffset, this.props.asyncIDCounter);
+			else if (!doNewTask && doExistingTask) this.props.punchExistingTask(this.refs.existingTask, this.props.dayOffset, this.props.asyncIDCounter);
 		};
 
 		const punchOut = () => {
-			this.props.punchExistingTask({ value : '-1_OUT' }, this.props.dayOffset);
+			this.props.punchExistingTask({ value : '-1_OUT' }, this.props.dayOffset, this.props.asyncIDCounter);
 		};
 
 		return <div>
@@ -58,7 +55,7 @@ class AddPunch extends React.Component {
 			</input>
 			<input onKeyPress={mapToEnterPress(
 					this,
-					() => this.props.punchNewTask(this.refs.newTaskName, this.props.dayOffset),
+					() => this.props.punchNewTask(this.refs.newTaskName, this.props.dayOffset, this.props.asyncIDCounter),
 					() => { this.refs.existingTask.value = ''; }
 				)}
 				type='text' ref='newTaskName'>

@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { Table } from 'react-bootstrap';
 import DateComponent from './DateComponent';
-import { updatePunch as updatePunchAction, deletePunch as deletePunchAction } from './redux/action-creators';
+import { asyncActions } from './redux/action-creators';
 import { sortPunches } from '../../app-util';
 
 @connect(
@@ -16,10 +16,10 @@ import { sortPunches } from '../../app-util';
 	dispatch => {
 		return {
 			updatePunch: (punchID, punchDate, deltaMinutes) => {
-				updatePunchAction(dispatch, punchID, punchDate, deltaMinutes);
+				asyncActions.updatePunch(dispatch, {punchID, punchDate, deltaMinutes});
 			},
 			deletePunch: (punchID) => {
-				deletePunchAction(dispatch, punchID);
+				asyncActions.deletePunch(dispatch, {punchID});
 			}
 		};
 	}

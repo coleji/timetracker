@@ -3,7 +3,7 @@ import { connect } from 'react-redux'; //eslint-disable-line no-unused-vars
 
 import { Table } from 'react-bootstrap';
 import DateReport from './DateReport';
-import { getPunches as getPunchesAction } from './redux/action-creators';//eslint-disable-line no-unused-vars
+import { asyncActions } from './redux/action-creators';//eslint-disable-line no-unused-vars
 import AddPunch from './AddPunch';
 import DailyTimeReport from './DailyTimeReport';
 
@@ -11,7 +11,7 @@ import DailyTimeReport from './DailyTimeReport';
 	() => ({}),
 	dispatch => ({
 		getPunches: (dayOffset) => {
-			getPunchesAction(dispatch, dayOffset);
+			asyncActions.getPunches(dispatch, {dayOffset});
 		}
 	})
 )
