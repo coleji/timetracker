@@ -19,7 +19,7 @@ class DateComponent extends React.Component {
 		};
 
 		const deletePunch = () => {
-			this.props.deletePunch(this.props.punch.punchID);
+			if (confirm('Do you really want to delete this punch?')) this.props.deletePunch(this.props.punch.punchID);
 		};
 
 		return <tr>
