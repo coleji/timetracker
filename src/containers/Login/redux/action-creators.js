@@ -6,8 +6,7 @@ const loginActionCreator = (dispatch, params) => {
 		httpMethod: 'POST',
 		apiEndpoint : '/login',
 		postData :  { userName, password }
-	}).then(result => {
-		console.log(result);
+	}).then(() => {
 		dispatch({
 			type: "LOGIN_SUCCESS",
 			userName

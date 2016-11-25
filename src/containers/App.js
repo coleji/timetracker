@@ -5,6 +5,7 @@ import { routeActions } from 'react-router-redux';//eslint-disable-line no-unuse
 import { asyncConnect } from 'redux-async-connect';//eslint-disable-line no-unused-vars
 
 import config from '../config';
+import { queueInEventLoop } from '../app-util';
 
 @asyncConnect([{
 	promise: () => {
@@ -24,8 +25,9 @@ export default class App extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (!this.props.userName && nextProps.userName) {
-			console.log("receiving username!");
-			this.props.pushState('/');
+			queueInEventLoop(() => {
+				this.props.pushState('/');
+			});
 		} else if (this.props.userName && !nextProps.userName) {
 			this.props.pushState('/login');
 		}

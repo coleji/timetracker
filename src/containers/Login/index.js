@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+
 import login from './redux/action-creators';
 
 @connect(
@@ -25,6 +27,7 @@ class Login extends React.Component {
 	render() {
 		return (
 			<form onSubmit={this.handleSubmit}>
+				<Link to="/home">Home</Link>
 				<input type="text" ref="username" />
 				<input type="submit" />
 			</form>

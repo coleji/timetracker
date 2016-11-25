@@ -11,8 +11,6 @@ export default (store) => {
 	const requireLogin = (nextState, replace, cb) => {
 		let state = store.getState();
 		if (!state.auth.userName) {
-			console.log("no username");
-			console.log(state);
 			replace('/login');
 		}
 		cb();
