@@ -20,7 +20,7 @@ new Promise((resolve, reject) => {
 	else return Promise.reject(err);
 }).then(dbVersion => {
 	// get all the patch files, return a filtered list of patches that are above our current patch level
-	console.log("starting db version is " + dbVersion);
+	console.log("Starting DB version is " + dbVersion);
 	return new Promise((resolve, reject) => {
 		let patches = fs.readdirSync('patch').filter(
 			file => {
@@ -44,13 +44,18 @@ new Promise((resolve, reject) => {
 	});
 }).then(patchesToApply => {
 	return new Promise((resolve, reject) => {
-		console.log("Patches to execute: " + patchesToApply.map(fileObj => fileObj.patchNumber).join(','));
+		if (patchesToApply.length == 0) {
+			console.log("Database is up to date.");
+			resolve();
+			return;
+		} else console.log("Patches to execute: " + patchesToApply.map(fileObj => fileObj.patchNumber).join(','));
+
 		if (process.argv[2] != 'execute') {
-			console.log('dry run complete; to execute patches, run "npm run patch -- execute"');
+			console.log('Dry run complete; to execute patches, run "npm run patch -- execute"');
 			resolve();
 			return;
 		}
-		
+
 		var patchIterator = new ArrayIterator(
 			patchesToApply.map(
 				fileObj => Object.assign(fileObj, {mod : require('./' + fileObj.file) } )
