@@ -4,7 +4,8 @@ const DEFAULT_STATE = {
 
 export default function(state = DEFAULT_STATE, action) {
 	switch (action.type) {
-	case 'LOGIN':
+	case 'LOGIN_SUCCESS':
+		console.log("about to set username to " + action.userName);
 		return {
 			userName: action.userName
 		};

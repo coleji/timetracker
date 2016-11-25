@@ -24,6 +24,7 @@ export default class App extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (!this.props.userName && nextProps.userName) {
+			console.log("receiving username!");
 			this.props.pushState('/');
 		} else if (this.props.userName && !nextProps.userName) {
 			this.props.pushState('/login');

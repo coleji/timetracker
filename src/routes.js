@@ -11,6 +11,8 @@ export default (store) => {
 	const requireLogin = (nextState, replace, cb) => {
 		let state = store.getState();
 		if (!state.auth.userName) {
+			console.log("no username");
+			console.log(state);
 			replace('/login');
 		}
 		cb();
@@ -18,7 +20,6 @@ export default (store) => {
 
 	return (
 		<Route path="/" component={App}>
-			{ /* Catch all route */ }
 			<Route path="login" component={Login} />
 			<Route onEnter={requireLogin}>
 				<IndexRoute component={Timetracker} />

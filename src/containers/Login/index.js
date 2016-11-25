@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import login from './redux/action-creators';
 
 @connect(
 	// mapStateToProps
@@ -7,10 +8,7 @@ import { connect } from 'react-redux';
 	// mapDispathToProps
 	dispatch => ({
 		login: (userName) => {
-			dispatch({
-				type : 'LOGIN',
-				userName
-			});
+			login(dispatch, {userName});
 		}
 	})
 )

@@ -19,6 +19,9 @@ export default function(dbPool, url, body) {
 		return updatePunch(dbPool, body.punchID, body.newDate);
 	case 'deletePunch':
 		return deletePunch(dbPool, body.punchID);
+	case 'login':
+		console.log(body);
+		return Promise.resolve("test1");
 	}
 	console.log('couldnt match url ' + urlComponents[0]);
 	return Promise.resolve({data: 'API Success!'});
