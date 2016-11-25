@@ -29,6 +29,7 @@ var ArrayIterator = function(arr) {
 // If there is no waiting callback, f will be run immediately (i.e. just as if you didn't do this crazy thing)
 // In other words, since there is no ability for waiting callbacks to interrupt the running sync thread, calling this from the running thread
 // gives waiting callbacks the ability to interrupt.  Kinda like when someone's waiting to get out of their driveway on a busy street and you let them in
+// Watch this is you have no idea what I'm talking about:  https://www.youtube.com/watch?v=8aGhZQkoFbQ
 const queueInEventLoop = f => {
 	setTimeout(f,0);
 };
