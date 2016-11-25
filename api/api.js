@@ -6,6 +6,7 @@ import SocketIo from 'socket.io';
 
 import config from '../src/config';
 import router from './router';
+import { createPool } from './mysql';
 const app = express();
 
 const server = new http.Server(app);
@@ -19,7 +20,13 @@ app.use(session({
 	saveUninitialized: false,
 	cookie: { maxAge: 60000 }
 }));
+
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+	req.dbPool = createPool();
+	next();
+});
 
 app.use((req, res, next) => {
 	if (req.method != 'OPTIONS') {
@@ -38,7 +45,7 @@ app.use((req, res, next) => {
 app.use((req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	router(req.url, req.body).then(data => {
+	router(req.dbPool, req.url, req.body).then(data => {
 		res.send({data : data});
 	}).catch(err => {
 		console.error(err);

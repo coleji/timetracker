@@ -4,21 +4,21 @@ import existingTask from './actions/existingTask';
 import updatePunch from './actions/updatePunch';
 import deletePunch from './actions/deletePunch';
 
-export default function(url, body) {
+export default function(dbPool, url, body) {
 	var urlComponents = url.split('/');
 	if (urlComponents[0] == '') urlComponents.splice(0,1); // may or may not start with a /
 
 	switch (urlComponents[0]) {
 	case 'getPunches':
-		return getPunches(urlComponents[1]);
+		return getPunches(dbPool, urlComponents[1]);
 	case 'newTask':
-		return newTask(body.taskName, body.punchDate);
+		return newTask(dbPool, body.taskName, body.punchDate);
 	case 'existingTask':
-		return existingTask(body.taskID, body.punchDate);
+		return existingTask(dbPool, body.taskID, body.punchDate);
 	case 'updatePunch':
-		return updatePunch(body.punchID, body.newDate);
+		return updatePunch(dbPool, body.punchID, body.newDate);
 	case 'deletePunch':
-		return deletePunch(body.punchID);
+		return deletePunch(dbPool, body.punchID);
 	}
 	console.log('couldnt match url ' + urlComponents[0]);
 	return Promise.resolve({data: 'API Success!'});

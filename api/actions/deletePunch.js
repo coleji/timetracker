@@ -1,8 +1,6 @@
-import db from '../mysql.js';
-
-export default function(punchID) {
+export default function(dbPool, punchID) {
 	return new Promise((resolve, reject) => {
-		db.query(
+		dbPool.query(
 			'delete from punches where punch_id = ?',[
 				punchID
 			],
