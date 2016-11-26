@@ -3,6 +3,7 @@ import newTask from './actions/newTask';
 import existingTask from './actions/existingTask';
 import updatePunch from './actions/updatePunch';
 import deletePunch from './actions/deletePunch';
+import login from './actions/login';
 
 export default function(dbPool, url, body) {
 	var urlComponents = url.split('/');
@@ -20,12 +21,7 @@ export default function(dbPool, url, body) {
 	case 'deletePunch':
 		return deletePunch(dbPool, body.punchID);
 	case 'login':
-		return new Promise((resolve) => {
-		//	setTimeout(() => {
-			resolve("test2");
-		//	}, 2000);
-		});
+		return login(dbPool, body.userName, body.password);
 	}
-	console.log('couldnt match url ' + urlComponents[0]);
-	return Promise.resolve({data: 'API Success!'});
+	return Promise.reject('couldnt match url ' + urlComponents[0]);
 }

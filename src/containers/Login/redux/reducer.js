@@ -8,10 +8,6 @@ export default function(state = DEFAULT_STATE, action) {
 		return {
 			userName: action.userName
 		};
-	case 'newTask_OPTIMISTIC':
-		return {
-			userName: null
-		};
 	}
 	return state;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 
 import login from './redux/action-creators';
 
@@ -9,8 +9,8 @@ import login from './redux/action-creators';
 	() => ({}),
 	// mapDispathToProps
 	dispatch => ({
-		login: (userName) => {
-			login(dispatch, {userName});
+		login: (userName, password) => {
+			login(dispatch, {userName, password});
 		}
 	})
 )
@@ -20,15 +20,18 @@ class Login extends React.Component {
 	}
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const input = this.refs.username;
-		this.props.login(input.value);
-		input.value = '';
+		const usernameField = this.refs.username;
+		const passwordField = this.refs.password;
+		this.props.login(usernameField.value, passwordField.value);
+		usernameField.value = '';
+		passwordField.value = '';
 	}
 	render() {
 		return (
 			<form onSubmit={this.handleSubmit}>
-				<Link to="/home">Home</Link>
-				<input type="text" ref="username" />
+				{/* <Link to="/home">Home</Link><br /> */ }
+				<input type="text" ref="username" /><br />
+				<input type="password" ref="password" /><br />
 				<input type="submit" />
 			</form>
 		);
