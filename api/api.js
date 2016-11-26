@@ -2,7 +2,8 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import session from 'express-session';
-var FileStore = require('session-file-store')(session);
+var RedisStore = require('connect-redis')(session);
+
 //import http from 'http';
 //import SocketIo from 'socket.io';
 
@@ -17,7 +18,7 @@ const io = new SocketIo(server);
 io.path('/ws');
 */
 
-var fileStoreOptions = {
+var storeOptions = {
 
 };
 
@@ -36,7 +37,7 @@ app.use(session({
 		path : "/",
 		secure: false
 	},
-	store: new FileStore(fileStoreOptions)
+	store: new RedisStore(storeOptions)
 }));
 
 app.use(function(req, res, next) {

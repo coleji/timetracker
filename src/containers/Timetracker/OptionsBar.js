@@ -6,7 +6,9 @@ import { logout } from './redux/action-creators';
 
 @connect(
 	// mapStateToProps
-	() => ({}),
+	state => ({
+		userName: state.auth.userName
+	}),
 	// mapDispathToProps
 	dispatch => ({
 		logout: () => {
@@ -22,7 +24,8 @@ class OptionsBar extends React.Component {
 	render() {
 		return <div>
 			<Link to="options">Options</Link>&nbsp;&nbsp;
-			<a href='#' onClick={this.props.logout} >Logout </a>
+			<a href='#' onClick={this.props.logout} >Logout </a>&nbsp;&nbsp;
+			Username: {this.props.userName}
 		</div>;
 	}
 }
