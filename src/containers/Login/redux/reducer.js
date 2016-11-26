@@ -8,6 +8,10 @@ export default function(state = DEFAULT_STATE, action) {
 		return {
 			userName: action.userName
 		};
+	case 'LOGOUT':
+		return {
+			userName: null
+		};
 	}
 	return state;
 }

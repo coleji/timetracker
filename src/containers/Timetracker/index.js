@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'; //eslint-disable-line no-unused-vars
-
 import { Table } from 'react-bootstrap';
+
 import DateReport from './DateReport';
 import { asyncActions } from './redux/action-creators';//eslint-disable-line no-unused-vars
 import AddPunch from './AddPunch';
 import DailyTimeReport from './DailyTimeReport';
+import OptionsBar from './OptionsBar';
 
 @connect(
 	() => ({}),
@@ -28,6 +29,7 @@ class Timetracker extends React.Component {
 				<AddPunch />
 				<DateReport />
 			</td><td>
+				<OptionsBar />
 				<DailyTimeReport />
 			</td><td></td></tr></tbody></Table>
 		);

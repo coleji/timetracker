@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from './containers/App';
 import Timetracker from './containers/Timetracker';
+import Options from './containers/Options';
 import Login from './containers/Login';
 import NotFound from './containers/NotFound';
 
@@ -21,6 +22,7 @@ export default (store) => {
 			<Route path="login" component={Login} />
 			<Route onEnter={requireLogin}>
 				<IndexRoute component={Timetracker} />
+				<Route path="options" component={Options}/>
 				<Route path="*" component={NotFound} status={404} />
 			</Route>
 		</Route>
