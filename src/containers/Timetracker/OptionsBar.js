@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { logout } from './redux/action-creators';
+
 @connect(
 	// mapStateToProps
 	() => ({}),
 	// mapDispathToProps
 	dispatch => ({
 		logout: () => {
-			dispatch({
-				type: 'LOGOUT'
-			});
+			logout(dispatch);
 		}
 	})
 )

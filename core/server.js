@@ -88,7 +88,41 @@ app.use((req, res) => {
 			res.status(500);
 			hydrateOnClient();
 		} else if (renderProps) {
-			loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
+			new Promise((resolve) => {
+				let options = {
+					hostname: 'localhost',
+					port: config.port,
+					path: '/api/isLoggedIn',
+					method: 'GET',
+					headers: { }
+				};
+
+				let req = http.request(options, (res) => {
+					let resData = '';
+					res.on('data', (chunk) => {
+						resData += chunk;
+					});
+					res.on('end', () => {
+						let response = JSON.parse(resData);
+						resolve(response);
+					});
+				});
+				req.on('error', () => {
+					resolve(null);
+				});
+
+				req.end();
+			}).then(userName => {
+				if (!userName) {
+					console.log("Found username " + userName + "!");
+					store.dispatch({
+						type: "LOGIN",
+						userName: userName
+					});
+				} else console.log("Didnt find a username");
+			}).then(() => {
+				return loadOnServer({...renderProps, store, helpers: {client}});
+			}).then(() => {
 				const component = (
 					<Provider store={store} key="provider">
 						<ReduxAsyncConnect {...renderProps} />
