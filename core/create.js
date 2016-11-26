@@ -25,6 +25,8 @@ export default function createStore(history, client, data) {
 	const reducer = require('../src/reducer');
 	const store = finalCreateStore(reducer, data);
 
+	console.log("@@",store.getState());
+
 	reduxRouterMiddleware.listenForReplays(store);
 
 	if (__DEVELOPMENT__ && module.hot) {

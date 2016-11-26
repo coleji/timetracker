@@ -35,10 +35,13 @@ export default function(req) {
 		});
 	case 'logout':
 		return new Promise((resolve) => {
-		//	req.session.destroy(err => {
-		//		if (err) console.log("Error destroying session: " + err);
-			resolve();
-		//	});
+			req.session.destroy(err => {
+				if (err) console.log("Error destroying session: " + err);
+				else {
+					console.log("Destroyed session!");
+					resolve();
+				}
+			});
 		});
 	case 'isLoggedIn':
 		return new Promise((resolve) => {

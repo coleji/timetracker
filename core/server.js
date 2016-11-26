@@ -60,85 +60,82 @@ proxy.on('error', (error, req, res) => {
 });
 
 app.use((req, res) => {
-	if (__DEVELOPMENT__) {
-		// Do not cache webpack stats: the script file would change since
-		// hot module replacement is enabled in the development env
-		webpackIsomorphicTools.refresh();
-	}
-	const client = new ApiClient(req);
-	const history = createHistory(req.originalUrl);
+	new Promise((resolve) => {
+		let options = {
+			hostname: 'localhost',
+			port: config.port,
+			path: '/api/isLoggedIn',
+			method: 'GET',
+			headers: {
+				cookie: req.headers.cookie
+			}
+		};
 
-	const store = createStore(history, client);
-
-	function hydrateOnClient() {
-		res.send('<!doctype html>\n' +
-			ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
-	}
-
-	if (__DISABLE_SSR__) {
-		hydrateOnClient();
-		return;
-	}
-
-	match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
-		if (redirectLocation) {
-			res.redirect(redirectLocation.pathname + redirectLocation.search);
-		} else if (error) {
-			console.error('ROUTER ERROR:', pretty.render(error));
-			res.status(500);
-			hydrateOnClient();
-		} else if (renderProps) {
-			new Promise((resolve) => {
-				let options = {
-					hostname: 'localhost',
-					port: config.port,
-					path: '/api/isLoggedIn',
-					method: 'GET',
-					headers: { }
-				};
-
-				let req = http.request(options, (res) => {
-					let resData = '';
-					res.on('data', (chunk) => {
-						resData += chunk;
-					});
-					res.on('end', () => {
-						let response = JSON.parse(resData);
-						resolve(response);
-					});
-				});
-				req.on('error', () => {
-					resolve(null);
-				});
-
-				req.end();
-			}).then(userName => {
-				if (!userName) {
-					console.log("Found username " + userName + "!");
-					store.dispatch({
-						type: "LOGIN",
-						userName: userName
-					});
-				} else console.log("Didnt find a username");
-			}).then(() => {
-				return loadOnServer({...renderProps, store, helpers: {client}});
-			}).then(() => {
-				const component = (
-					<Provider store={store} key="provider">
-						<ReduxAsyncConnect {...renderProps} />
-					</Provider>
-				);
-
-				res.status(200);
-
-				global.navigator = {userAgent: req.headers['user-agent']};
-
-				res.send('<!doctype html>\n' +
-				ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+		let apiReq = http.request(options, (apiRes) => {
+			let resData = '';
+			apiRes.on('data', (chunk) => {
+				resData += chunk;
 			});
-		} else {
-			res.status(404).send('Not found');
+			apiRes.on('end', () => {
+				let response = JSON.parse(resData);
+				console.log("api server returned ", resData);
+				resolve(response.data);
+			});
+		});
+		apiReq.on('error', () => {
+			resolve(null);
+		});
+
+		apiReq.end();
+	}).then(userName => {
+		if (__DEVELOPMENT__) {
+			// Do not cache webpack stats: the script file would change since
+			// hot module replacement is enabled in the development env
+			webpackIsomorphicTools.refresh();
 		}
+		const client = new ApiClient(req);
+		const history = createHistory(req.originalUrl);
+
+		const store = createStore(history, client, {auth: {userName}});
+
+		function hydrateOnClient() {
+			res.send('<!doctype html>\n' +
+				ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+		}
+
+		if (__DISABLE_SSR__) {
+			hydrateOnClient();
+			return;
+		}
+
+		match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+			if (redirectLocation) {
+				res.redirect(redirectLocation.pathname + redirectLocation.search);
+			} else if (error) {
+				console.error('ROUTER ERROR:', pretty.render(error));
+				res.status(500);
+				hydrateOnClient();
+			} else if (renderProps) {
+				loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
+					const component = (
+						<Provider store={store} key="provider">
+							<ReduxAsyncConnect {...renderProps} />
+						</Provider>
+					);
+
+					res.status(200);
+
+					global.navigator = {userAgent: req.headers['user-agent']};
+
+					res.send('<!doctype html>\n' +
+					ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+				});
+			} else {
+				res.status(404).send('Not found');
+			}
+		});
+	}).catch(err => {
+		console.log("Error in the new thing: " + err);
 	});
 });
 
