@@ -4,6 +4,7 @@ import existingTask from './actions/existingTask';
 import updatePunch from './actions/updatePunch';
 import deletePunch from './actions/deletePunch';
 import login from './actions/login';
+import changePassword from './actions/changePassword';
 
 export default function(req) {
 	var urlComponents = req.url.split('/');
@@ -20,6 +21,8 @@ export default function(req) {
 		return updatePunch(req.dbPool, req.body.punchID, req.body.newDate);
 	case 'deletePunch':
 		return deletePunch(req.dbPool, req.body.punchID);
+	case 'changePassword':
+		return changePassword(req.dbPool, req.body.oldPw, req.body.newPw, req.session.userName);
 	case 'login':
 		return new Promise((resolve) => {
 		//	req.session.regenerate(err => {

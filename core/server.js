@@ -66,10 +66,10 @@ app.use((req, res) => {
 			port: config.port,
 			path: '/api/isLoggedIn',
 			method: 'GET',
-			headers: {
-				cookie: req.headers.cookie
-			}
+			headers: { }
 		};
+
+		if (req.headers.cookie) options.headers.cookie = req.headers.cookie;
 
 		let apiReq = http.request(options, (apiRes) => {
 			let resData = '';
