@@ -5,8 +5,8 @@ import http from 'http';
 import SocketIo from 'socket.io';
 
 import config from '../src/config';
-import router from './router';
-import { createPool } from './mysql';
+import router from '../api/router';
+import { createPool } from '../api/mysql';
 const app = express();
 
 const server = new http.Server(app);

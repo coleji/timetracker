@@ -11,7 +11,7 @@ import { ReduxAsyncConnect } from 'redux-async-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
 import getRoutes from '../src/routes';
-import createStore from './create';
+import createStore from './CreateStore';
 import ApiClient from './ApiClient';
 
 const client = new ApiClient();
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (__DEVTOOLS__ && !window.devToolsExtension) {
-	const DevTools = require('./DevTools/DevTools');
+	const DevTools = require('./DevTools');
 	ReactDOM.render(
 		<Provider store={store} key="provider">
 			<div>

@@ -15,7 +15,7 @@ import http from 'http';
 
 import getRoutes from '../src/routes';
 import config from '../src/config';
-import createStore from './create';
+import createStore from './CreateStore';
 import ApiClient from './ApiClient';
 import Html from './Html';
 

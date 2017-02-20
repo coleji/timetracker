@@ -1,18 +1,16 @@
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 import { syncHistory } from 'react-router-redux';
 
-import createMiddleware from './clientMiddleware';
-
 export default function createStore(history, client, data) {
 	// Sync dispatched route actions to the history
 	const reduxRouterMiddleware = syncHistory(history);
 
-	const middleware = [createMiddleware(client), reduxRouterMiddleware];
+	const middleware = [reduxRouterMiddleware];
 
 	let finalCreateStore;
 	if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
 		const { persistState } = require('redux-devtools');
-		const DevTools = require('./DevTools/DevTools');
+		const DevTools = require('./DevTools');
 		finalCreateStore = compose(
 			applyMiddleware(...middleware),
 			window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),

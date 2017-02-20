@@ -21,7 +21,7 @@ module.exports = {
 		'main': [
 			'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
 			'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
-			'./core/client.js'
+			'./reduxxor/ViewClient.js'
 		]
 	},
 	output: {
