@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Table } from 'react-bootstrap';
 import DateComponent from './DateComponent';
 import { asyncActions } from './redux/action-creators';
-import { sortPunches } from '../../app-util';
+import { sortPunches } from '../../../app-util';
 
 @connect(
 	// mapStateToProps

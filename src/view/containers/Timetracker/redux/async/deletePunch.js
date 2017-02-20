@@ -1,5 +1,5 @@
-import ReduxModule from '../../../../../reduxxor/ReduxModule';
-import { createActionFromAPIResponse } from '../../../../../reduxxor/ApiConnector';
+import ReduxModule from '../../../../../../reduxxor/ReduxModule';
+import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConnector';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
 	let {punchID} = params;

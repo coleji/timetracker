@@ -20,14 +20,14 @@ export default function createStore(history, client, data) {
 		finalCreateStore = applyMiddleware(...middleware)(_createStore);
 	}
 
-	const reducer = require('../src/reducer');
+	const reducer = require('../src/view/reducer');
 	const store = finalCreateStore(reducer, data);
 
 	reduxRouterMiddleware.listenForReplays(store);
 
 	if (__DEVELOPMENT__ && module.hot) {
-		module.hot.accept('../src/reducer', () => {
-			store.replaceReducer(require('../src/reducer'));
+		module.hot.accept('../src/view/reducer', () => {
+			store.replaceReducer(require('../src/view/reducer'));
 		});
 	}
 

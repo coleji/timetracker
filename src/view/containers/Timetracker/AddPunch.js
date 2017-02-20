@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { asyncActions } from './redux/action-creators';
-import { mapToEnterPress } from '../../app-util';
+import { mapToEnterPress } from '../../../app-util';
 
 @connect(
 	// mapStateToProps

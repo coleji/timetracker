@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { sortPunches } from '../../../app-util';
+import { sortPunches } from '../../../../app-util';
 import { reducerModules as asyncReducers} from './async';
 
 moment().format();

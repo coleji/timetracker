@@ -1,8 +1,8 @@
 import moment from 'moment';
 
-import ReduxModule from '../../../../../reduxxor/ReduxModule';
-import { createActionFromAPIResponse } from '../../../../../reduxxor/ApiConnector';
-import { sortPunches } from '../../../../app-util';
+import ReduxModule from '../../../../../../reduxxor/ReduxModule';
+import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConnector';
+import { sortPunches } from '../../../../../app-util';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
 	var {dayOffset} = params;

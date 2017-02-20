@@ -13,7 +13,7 @@ import {Provider} from 'react-redux';
 import PrettyError from 'pretty-error';
 import http from 'http';
 
-import getRoutes from '../src/routes';
+import getRoutes from '../src/view/routes';
 import config from '../src/config';
 import createStore from './CreateStore';
 import ApiClient from './ApiClient';

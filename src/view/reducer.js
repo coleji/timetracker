@@ -3,7 +3,6 @@ import { routeReducer } from 'react-router-redux';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
 import {reducer as form} from 'redux-form';
 
-
 import punchData from './containers/Timetracker/redux/reducer';
 
 

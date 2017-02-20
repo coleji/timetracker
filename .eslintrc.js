@@ -39,6 +39,7 @@ module.exports = {
 	    "__DISABLE_SSR__": true,
 	    "__DEVTOOLS__": true,
 	    "socket": true,
-	    "webpackIsomorphicTools": true
+	    "webpackIsomorphicTools": true,
+		"__ROOT_DIR__" : true
 	  }
 };

@@ -10,7 +10,7 @@ import { Router, browserHistory } from 'react-router';
 import { ReduxAsyncConnect } from 'redux-async-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
-import getRoutes from '../src/routes';
+import getRoutes from '../src/view/routes';
 import createStore from './CreateStore';
 import ApiClient from './ApiClient';
 
@@ -34,6 +34,7 @@ function initSocket() {
 
 global.socket = initSocket();
 */
+
 const component = (
 	<Router render={(props) =>
 			<ReduxAsyncConnect {...props} helpers={{client}} filter={item => !item.deferred} />
