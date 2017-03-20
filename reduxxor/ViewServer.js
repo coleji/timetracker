@@ -60,56 +60,88 @@ proxy.on('error', (error, req, res) => {
 });
 
 app.use((req, res) => {
-	if (__DEVELOPMENT__) {
-		// Do not cache webpack stats: the script file would change since
-		// hot module replacement is enabled in the development env
-		webpackIsomorphicTools.refresh();
-	}
-	const client = new ApiClient(req);
-	const history = createHistory(req.originalUrl);
+	new Promise((resolve) => {
+		let options = {
+			hostname: 'localhost',
+			port: config.port,
+			path: '/api/isLoggedIn',
+			method: 'GET',
+			headers: { }
+		};
 
-	const store = createStore(history, client, {
-		config : {
-			host : config.host,
-			port : config.port
-		}
-	});
+		if (req.headers.cookie) options.headers.cookie = req.headers.cookie;
 
-	function hydrateOnClient() {
-		res.send('<!doctype html>\n' +
-			ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
-	}
-
-	if (__DISABLE_SSR__) {
-		hydrateOnClient();
-		return;
-	}
-
-	match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
-		if (redirectLocation) {
-			res.redirect(redirectLocation.pathname + redirectLocation.search);
-		} else if (error) {
-			console.error('ROUTER ERROR:', pretty.render(error));
-			res.status(500);
-			hydrateOnClient();
-		} else if (renderProps) {
-			loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
-				const component = (
-					<Provider store={store} key="provider">
-						<ReduxAsyncConnect {...renderProps} />
-					</Provider>
-				);
-
-				res.status(200);
-
-				global.navigator = {userAgent: req.headers['user-agent']};
-
-				res.send('<!doctype html>\n' +
-				ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+		let apiReq = http.request(options, (apiRes) => {
+			let resData = '';
+			apiRes.on('data', (chunk) => {
+				resData += chunk;
 			});
-		} else {
-			res.status(404).send('Not found');
+			apiRes.on('end', () => {
+				let response = JSON.parse(resData);
+				console.log("api server returned ", resData);
+				resolve(response.data);
+			});
+		});
+		apiReq.on('error', () => {
+			resolve(null);
+		});
+
+		apiReq.end();
+	}).then(userName => {
+		if (__DEVELOPMENT__) {
+			// Do not cache webpack stats: the script file would change since
+			// hot module replacement is enabled in the development env
+			webpackIsomorphicTools.refresh();
 		}
+		const client = new ApiClient(req);
+		const history = createHistory(req.originalUrl);
+
+		const store = createStore(history, client, {
+			config : {
+				host : config.host,
+				port : config.port
+			},
+			auth: {userName}
+		});
+
+		function hydrateOnClient() {
+			res.send('<!doctype html>\n' +
+				ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+		}
+
+		if (__DISABLE_SSR__) {
+			hydrateOnClient();
+			return;
+		}
+
+		match({ history, routes: getRoutes(store), location: req.originalUrl }, (error, redirectLocation, renderProps) => {
+			if (redirectLocation) {
+				res.redirect(redirectLocation.pathname + redirectLocation.search);
+			} else if (error) {
+				console.error('ROUTER ERROR:', pretty.render(error));
+				res.status(500);
+				hydrateOnClient();
+			} else if (renderProps) {
+				loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
+					const component = (
+						<Provider store={store} key="provider">
+							<ReduxAsyncConnect {...renderProps} />
+						</Provider>
+					);
+
+					res.status(200);
+
+					global.navigator = {userAgent: req.headers['user-agent']};
+
+					res.send('<!doctype html>\n' +
+					ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+				});
+			} else {
+				res.status(404).send('Not found');
+			}
+		});
+	}).catch(err => {
+		console.log("Error in the new thing: " + err);
 	});
 });
 

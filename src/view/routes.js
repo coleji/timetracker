@@ -1,14 +1,30 @@
 import React from 'react';//eslint-disable-line no-unused-vars
-import {Route} from 'react-router';
+import { Route, IndexRoute } from 'react-router';
 
 import App from './containers/App';
+import Timetracker from './containers/Timetracker';
+import Options from './containers/Options';
+import Login from './containers/Login';
 import NotFound from './containers/NotFound';
 
-export default () => {
+
+export default (store) => {
+	const requireLogin = (nextState, replace, cb) => {
+		let state = store.getState();
+		if (!state.auth.userName) {
+			replace('/login');
+		}
+		cb();
+	};
+
 	return (
 		<Route path="/" component={App}>
-			{ /* Catch all route */ }
-			<Route path="*" component={NotFound} status={404} />
+			<Route path="login" component={Login} />
+			<Route onEnter={requireLogin}>
+				<IndexRoute component={Timetracker} />
+				<Route path="options" component={Options}/>
+				<Route path="*" component={NotFound} status={404} />
+			</Route>
 		</Route>
 	);
 };

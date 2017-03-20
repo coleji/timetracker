@@ -1,27 +1,52 @@
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import session from 'express-session';
-import http from 'http';
-import SocketIo from 'socket.io';
+var RedisStore = require('connect-redis')(session);
+
+//import http from 'http';
+//import SocketIo from 'socket.io';
 
 import config from '../src/config';
 import router from '../src/api/router';
 import { createPool } from '../src/api/mysql';
 const app = express();
 
-const server = new http.Server(app);
-
+//const server = new http.Server(app);
+/*
 const io = new SocketIo(server);
 io.path('/ws');
+*/
 
-app.use(session({
-	secret: 'react and redux rule!!!!',
-	resave: false,
-	saveUninitialized: false,
-	cookie: { maxAge: 60000 }
-}));
+var storeOptions = {
+
+};
+
+const SECRET = "dfgdfgdfgdfg";
 
 app.use(bodyParser.json());
+app.use(cookieParser(SECRET));
+
+app.use(session({
+	secret: SECRET,
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		expires: new Date((new Date()).getTime() + 86400000),
+		domain: "localhost",
+		path : "/",
+		secure: false
+	},
+	store: new RedisStore(storeOptions)
+}));
+
+app.use(function(req, res, next) {
+	req.session.views = req.session.views || 0;
+	req.session.views++;
+	console.log("views: " + req.session.views);
+
+	next();
+});
 
 app.use((req, res, next) => {
 	req.dbPool = createPool();
@@ -42,10 +67,23 @@ app.use((req, res, next) => {
 	res.status(200).end();
 });
 
+app.use((req, res, next) => {
+	if (req.url != '/isLoggedIn') {
+		if (!req.session.timestamp) req.session.timestamp = new Date().getTime();
+		req.session.save();
+	}
+	console.log(req.session);
+	console.log("req.sessionId: " + req.sessionId);
+	console.log("req.session.id: " + req.session.id);
+	console.log("req.session.cookie: ", req.session.cookie);
+	console.log("req.url:" + req.url);
+	next();
+});
+
 app.use((req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	router(req.dbPool, req.url, req.body).then(data => {
+	router(req).then(data => {
 		res.send({data : data});
 	}).catch(err => {
 		console.error(err);
