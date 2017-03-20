@@ -1,5 +1,5 @@
 import { actionCreatorModules as asyncActions} from './async';
-import { createActionFromAPIResponse } from '../../../../core/api-client';
+import { createActionFromAPIResponse } from '../../../../../reduxxor/ApiConnector';
 
 const logout = dispatch => {
 	createActionFromAPIResponse({

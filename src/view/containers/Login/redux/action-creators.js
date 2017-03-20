@@ -1,11 +1,12 @@
-import { createActionFromAPIResponse } from '../../../../core/api-client';
+import { createActionFromAPIResponse } from '../../../../../reduxxor/ApiConnector';
 
-const loginActionCreator = (dispatch, params) => {
+const loginActionCreator = (config, dispatch, params) => {
 	let {userName, password} = params;
 	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/login',
-		postData :  { userName, password }
+		postData :  { userName, password },
+		config
 	}).then(() => {
 		dispatch({
 			type: "LOGIN_SUCCESS",

@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import changePasswordActionCreator from './redux/action-creators';
 
+var config;
+
 @connect(
-	() => ({}),
+	state=> ({ config: state.config }),
 	dispatch => ({
 		changePassword: (oldPw, newPw) => {
-			changePasswordActionCreator(dispatch, {oldPw, newPw});
+			changePasswordActionCreator(config, dispatch, {oldPw, newPw});
 		}
 	})
 )
@@ -15,6 +17,7 @@ class Timetracker extends React.Component {
 	constructor() {
 		super();
 	}
+	componentDidMount() { config = this.props.config; }
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const oldPw = this.refs.oldPw;

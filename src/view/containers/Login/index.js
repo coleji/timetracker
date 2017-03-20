@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 
 import login from './redux/action-creators';
 
+var config = {};
+
 @connect(
 	// mapStateToProps
-	() => ({}),
+	state => ({ config: state.config }),
 	// mapDispathToProps
 	dispatch => ({
 		login: (userName, password) => {
-			login(dispatch, {userName, password});
+			login(config, dispatch, {userName, password});
 		}
 	})
 )
@@ -18,6 +20,7 @@ class Login extends React.Component {
 	constructor() {
 		super();
 	}
+	componentDidMount() { config = this.props.config; }
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const usernameField = this.refs.username;
