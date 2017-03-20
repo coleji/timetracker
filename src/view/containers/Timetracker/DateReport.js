@@ -7,24 +7,29 @@ import DateComponent from './DateComponent';
 import { asyncActions } from './redux/action-creators';
 import { sortPunches } from '../../../app-util';
 
+var config = {};
+
 @connect(
 	// mapStateToProps
-	state => {
-		return {punches: state.punchData.punches, dayOffset : state.punchData.dayOffset};
-	},
+	state => ({
+		punches: state.punchData.punches,
+		dayOffset : state.punchData.dayOffset,
+		config: state.config
+	}),
 	// mapDispathToProps
 	dispatch => {
 		return {
 			updatePunch: (punchID, punchDate, deltaMinutes) => {
-				asyncActions.updatePunch(dispatch, {punchID, punchDate, deltaMinutes});
+				asyncActions.updatePunch(config, dispatch, {punchID, punchDate, deltaMinutes});
 			},
 			deletePunch: (punchID) => {
-				asyncActions.deletePunch(dispatch, {punchID});
+				asyncActions.deletePunch(config, dispatch, {punchID});
 			}
 		};
 	}
 )
 class DateReport extends React.Component {
+	componentDidMount() { config = this.props.config; }
 	render() {
 		return <Table striped bordered condensed hover cellSpacing="5">
 			<tbody>

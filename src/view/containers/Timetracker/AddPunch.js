@@ -4,27 +4,30 @@ import { connect } from 'react-redux';
 import { asyncActions } from './redux/action-creators';
 import { mapToEnterPress } from '../../../app-util';
 
+var config = {};
+
 @connect(
 	// mapStateToProps
 	state => ({
 		punches: state.punchData.punches,
 		tasks: state.punchData.tasks,
 		dayOffset : state.punchData.dayOffset,
-		asyncIDCounter : state.punchData.asyncIDCounter
+		asyncIDCounter : state.punchData.asyncIDCounter,
+		config: state.config
 	}),
 	// mapDispathToProps
 	dispatch => ({
 		punchNewTask: (newTaskName, dayOffset, asyncIDCounter) => {
 			if (newTaskName.value.length == 0) return;
-			asyncActions.newTask(dispatch, {taskName : newTaskName.value, dayOffset, asyncIDCounter});
+			asyncActions.newTask(config, dispatch, {taskName : newTaskName.value, dayOffset, asyncIDCounter});
 			newTaskName.value = null;
 		},
 		punchExistingTask:  (existingTask, dayOffset, asyncIDCounter) => {
-			asyncActions.existingTask(dispatch, {taskIDAndName : existingTask.value, dayOffset, asyncIDCounter});
+			asyncActions.existingTask(config, dispatch, {taskIDAndName : existingTask.value, dayOffset, asyncIDCounter});
 			existingTask.value = '';
 		},
 		updateDayOffset: (dayOffset) => {
-			asyncActions.getPunches(dispatch, {dayOffset : dayOffset.value});
+			asyncActions.getPunches(config, dispatch, {dayOffset : dayOffset.value});
 		}
 	})
 )
@@ -33,6 +36,7 @@ class AddPunch extends React.Component {
 		super();
 	}
 	componentDidMount() {
+		config = this.props.config;
 		this.refs.dayOffset.value = this.props.dayOffset;
 	}
 	render() {

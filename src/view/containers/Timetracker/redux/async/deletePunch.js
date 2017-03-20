@@ -2,11 +2,12 @@ import ReduxModule from '../../../../../../reduxxor/ReduxModule';
 import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConnector';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
-	let {punchID} = params;
+	let {punchID, config} = params;
 	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/deletePunch',
-		postData :  { punchID }
+		postData :  { punchID },
+		config
 	}).catch(e => console.log(e));
 
 	optimisticDispatch({

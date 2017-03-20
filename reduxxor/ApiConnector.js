@@ -3,8 +3,8 @@ import http from 'http';
 var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {
 		let options = {
-			hostname: 'localhost',
-			port: 3002,
+			hostname: params.host,
+			port: params.port,
 			path: '/api' + params.apiEndpoint,
 			method: params.httpMethod,
 			headers: { }
@@ -40,7 +40,9 @@ var createActionFromAPIResponse = function(params) {
 		makeAPIRequest({
 			apiEndpoint: params.apiEndpoint,
 			httpMethod: params.httpMethod,
-			postData: params.postData
+			postData: params.postData,
+			host : params.config.host,
+			port : params.config.port
 		})
 		.then((json) => {
 			let data = json.data;

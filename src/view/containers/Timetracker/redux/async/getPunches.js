@@ -1,17 +1,19 @@
 import moment from 'moment';
 
+//import {ReduxModule, createActionFromAPIResponse} from 'reduxxor';
 import ReduxModule from '../../../../../../reduxxor/ReduxModule';
 import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConnector';
 import { sortPunches } from '../../../../../app-util';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
-	var {dayOffset} = params;
+	var {dayOffset, config} = params;
 	if (isNaN(dayOffset)) dayOffset = 0;
 	else dayOffset = Number(dayOffset);
 	createActionFromAPIResponse({
 		httpMethod: 'GET',
 		apiEndpoint : '/getPunches/' + dayOffset,
-		stateItemName : 'punches'
+		stateItemName : 'punches',
+		config
 	}).then(punches => {
 		punches = punches || [];
 		punches.forEach(e => { e.punchDate = moment(e.punchDate); });

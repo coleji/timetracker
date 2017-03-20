@@ -4,7 +4,7 @@ import ReduxModule from '../../../../../../reduxxor/ReduxModule';
 import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConnector';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
-	let {taskIDAndName, dayOffset, asyncIDCounter} = params;
+	let {taskIDAndName, dayOffset, asyncIDCounter, config} = params;
 	let tempPunchID = asyncIDCounter--;
 	let punchDate = moment().add(dayOffset, 'days');
 	let taskID = taskIDAndName.split('_')[0];
@@ -15,7 +15,8 @@ const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
 	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/existingTask',
-		postData :  { taskID, punchDate }
+		postData :  { taskID, punchDate },
+		config
 	}).then(punch => {
 		successDispatch({
 			tempPunchID,

@@ -7,11 +7,13 @@ import { asyncActions } from './redux/action-creators';//eslint-disable-line no-
 import AddPunch from './AddPunch';
 import DailyTimeReport from './DailyTimeReport';
 
+var config = {};
+
 @connect(
-	() => ({}),
+	state => ({ config: state.config}),
 	dispatch => ({
 		getPunches: (dayOffset) => {
-			asyncActions.getPunches(dispatch, {dayOffset});
+			asyncActions.getPunches(config, dispatch, {dayOffset});
 		}
 	})
 )
@@ -20,6 +22,7 @@ class Timetracker extends React.Component {
 		super();
 	}
 	componentDidMount() {
+		config = this.props.config;
 		this.props.getPunches(0);
 	}
 	render() {

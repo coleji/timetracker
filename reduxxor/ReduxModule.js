@@ -13,8 +13,8 @@ var ReduxModule = function(params) {
 		};
 	}
 
-	this.actionCreator = function(dispatch, params) {
-		return actionCreatorAbstract(getOptimisticDispatch(dispatch), getSuccessDispatch(dispatch), params);
+	this.actionCreator = function(config, dispatch, params) {
+		return actionCreatorAbstract(getOptimisticDispatch(dispatch), getSuccessDispatch(dispatch), Object.assign({}, params, {config}));
 	};
 
 	this.reducer = {};

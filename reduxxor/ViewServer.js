@@ -68,7 +68,12 @@ app.use((req, res) => {
 	const client = new ApiClient(req);
 	const history = createHistory(req.originalUrl);
 
-	const store = createStore(history, client);
+	const store = createStore(history, client, {
+		config : {
+			host : config.host,
+			port : config.port
+		}
+	});
 
 	function hydrateOnClient() {
 		res.send('<!doctype html>\n' +

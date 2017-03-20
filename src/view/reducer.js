@@ -10,5 +10,6 @@ export default combineReducers({
 	routing: routeReducer,
 	reduxAsyncConnect,
 	form,
-	punchData
+	punchData,
+	config : function(state = {}) { return state; }
 });
