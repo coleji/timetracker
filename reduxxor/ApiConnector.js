@@ -4,7 +4,7 @@ var makeAPIRequest = function(params) {
 	return new Promise((resolve, reject) => {
 		let options = {
 			hostname: 'localhost',
-			port: 8080,
+			port: 3002,
 			path: '/api' + params.apiEndpoint,
 			method: params.httpMethod,
 			headers: { }
