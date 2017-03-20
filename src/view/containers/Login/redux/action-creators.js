@@ -7,11 +7,17 @@ const loginActionCreator = (config, dispatch, params) => {
 		apiEndpoint : '/login',
 		postData :  { userName, password },
 		config
-	}).then(() => {
-		dispatch({
-			type: "LOGIN_SUCCESS",
-			userName
-		});
+	}).then((data) => {
+		if (data) {
+			dispatch({
+				type: "LOGIN_SUCCESS",
+				userName
+			});
+		} else {
+			dispatch({
+				type: "LOGIN_FAIL"
+			});
+		}
 	}).catch(e => console.log(e));
 };
 

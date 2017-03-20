@@ -4,15 +4,18 @@ import { Link } from 'react-router';
 
 import { logout } from './redux/action-creators';
 
+var config = {};
+
 @connect(
 	// mapStateToProps
 	state => ({
+		config: state.config,
 		userName: state.auth.userName
 	}),
 	// mapDispathToProps
 	dispatch => ({
 		logout: () => {
-			logout(dispatch);
+			logout(config, dispatch);
 		}
 	})
 )
@@ -20,7 +23,9 @@ class OptionsBar extends React.Component {
 	constructor() {
 		super();
 	}
-
+	componentDidMount() {
+		config = this.props.config;
+	}
 	render() {
 		return <div>
 			<Link to="options">Options</Link>&nbsp;&nbsp;

@@ -1,11 +1,12 @@
 import { actionCreatorModules as asyncActions} from './async';
 import { createActionFromAPIResponse } from '../../../../../reduxxor/ApiConnector';
 
-const logout = dispatch => {
+const logout = (config, dispatch) => {
 	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/logout',
-		postData :  { }
+		postData :  { },
+		config
 	}).catch(e => console.log(e));
 
 	dispatch({

@@ -32,8 +32,10 @@ export default function(req) {
 		}).then(() => {
 			return login(req.dbPool, req.body.userName, req.body.password);
 		}).then(data => {
-			req.session.userName = req.body.userName;
-		//	req.session.save();
+			if (data) {
+				req.session.initialized = true;
+				req.session.userName = req.body.userName;
+			}
 			return Promise.resolve(data);
 		});
 	case 'logout':

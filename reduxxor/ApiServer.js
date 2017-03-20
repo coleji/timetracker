@@ -27,23 +27,27 @@ const SECRET = "dfgdfgdfgdfg";
 app.use(bodyParser.json());
 app.use(cookieParser(SECRET));
 
-app.use(session({
-	secret: SECRET,
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		expires: new Date((new Date()).getTime() + 86400000),
-		domain: "localhost",
-		path : "/",
-		secure: false
-	},
-	store: new RedisStore(storeOptions)
-}));
+app.use((function() {
+	return session({
+		secret: SECRET,
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			expires: new Date((new Date()).getTime() + 86400000),
+			domain: "localhost",
+			path : "/",
+			secure: false
+		},
+		store: new RedisStore(storeOptions)
+	});
+}()));
 
 app.use(function(req, res, next) {
-	req.session.views = req.session.views || 0;
-	req.session.views++;
-	console.log("views: " + req.session.views);
+	if (req.session.initialized) {
+		req.session.views = req.session.views || 0;
+		req.session.views++;
+		console.log("views: " + req.session.views);
+	}
 
 	next();
 });
@@ -68,11 +72,11 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-	if (req.url != '/isLoggedIn') {
-		if (!req.session.timestamp) req.session.timestamp = new Date().getTime();
-		req.session.save();
+	console.log("### URL IS " + req.url)
+	if (req.session.initialized && !req.session.timestamp) {
+		req.session.timestamp = new Date().getTime();
 	}
-	console.log(req.session);
+	console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", req.session);
 	console.log("req.sessionId: " + req.sessionId);
 	console.log("req.session.id: " + req.session.id);
 	console.log("req.session.cookie: ", req.session.cookie);

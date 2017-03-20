@@ -12,6 +12,9 @@ export default function(state = DEFAULT_STATE, action) {
 		return {
 			userName: null
 		};
+
+	case 'LOGIN_FAIL':
+	default:
+		return state;
 	}
-	return state;
 }
