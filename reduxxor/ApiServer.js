@@ -48,24 +48,6 @@ app.use((req, res, next) => {
 	next();
 });
 
-/*
-app.use((req, res, next) => {
-	var cookieExp = req.session.cookie.expires.getTime();
-	var now =  (new Date()).getTime()
-	var expired = (cookieExp < now)
-	console.log("##### is cookie expired?  " + expired + "  " + cookieExp + "   " + now)
-	if (expired) {
-		req.session.destroy(err => {
-			if (err) console.log("Error destroying session: " + err);
-			else {
-				console.log("Destroyed session!");
-			}
-			next();
-		});
-	} else next();
-});
-*/
-
 app.use((req, res, next) => {
 	if (req.method != 'OPTIONS') {
 		next();
@@ -81,11 +63,8 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-	console.log("### URL IS " + req.url);
-	console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", req.session);
-	console.log("req.session.id: " + req.session.id);
-	console.log("req.session.cookie: ", req.session.cookie);
-	console.log("req.url:" + req.url);
+	console.log("URL: " + req.url);
+	console.log("SESSION: ", req.session);
 	next();
 });
 

@@ -69,7 +69,9 @@ app.use((req, res) => {
 			headers: { }
 		};
 
-		if (req.headers.cookie) options.headers.cookie = req.headers.cookie;
+		if (req.headers.cookie) {
+			options.headers.cookie = req.headers.cookie;
+		}
 
 		let apiReq = http.request(options, (apiRes) => {
 			let resData = '';
