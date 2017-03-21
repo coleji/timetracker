@@ -33,7 +33,7 @@ export default function(req) {
 			return login(req.dbPool, req.body.userName, req.body.password);
 		}).then(data => {
 			if (data) {
-				req.session.initialized = true;
+				req.session.valid = true;
 				req.session.userName = req.body.userName;
 			}
 			return Promise.resolve(data);

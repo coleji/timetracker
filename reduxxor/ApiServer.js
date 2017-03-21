@@ -23,6 +23,7 @@ var storeOptions = {
 };
 
 const SECRET = "dfgdfgdfgdfg";
+const COOKIE_LIFE_MS = 30000;
 
 app.use(bodyParser.json());
 app.use(cookieParser(SECRET));
@@ -33,7 +34,7 @@ app.use((function() {
 		resave: false,
 		saveUninitialized: false,
 		cookie: {
-			expires: new Date((new Date()).getTime() + 86400000),
+			expires: new Date((new Date()).getTime() + COOKIE_LIFE_MS),
 			domain: "localhost",
 			path : "/",
 			secure: false
@@ -42,20 +43,28 @@ app.use((function() {
 	});
 }()));
 
-app.use(function(req, res, next) {
-	if (req.session.initialized) {
-		req.session.views = req.session.views || 0;
-		req.session.views++;
-		console.log("views: " + req.session.views);
-	}
-
-	next();
-});
-
 app.use((req, res, next) => {
 	req.dbPool = createPool();
 	next();
 });
+
+/*
+app.use((req, res, next) => {
+	var cookieExp = req.session.cookie.expires.getTime();
+	var now =  (new Date()).getTime()
+	var expired = (cookieExp < now)
+	console.log("##### is cookie expired?  " + expired + "  " + cookieExp + "   " + now)
+	if (expired) {
+		req.session.destroy(err => {
+			if (err) console.log("Error destroying session: " + err);
+			else {
+				console.log("Destroyed session!");
+			}
+			next();
+		});
+	} else next();
+});
+*/
 
 app.use((req, res, next) => {
 	if (req.method != 'OPTIONS') {
@@ -72,12 +81,8 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-	console.log("### URL IS " + req.url)
-	if (req.session.initialized && !req.session.timestamp) {
-		req.session.timestamp = new Date().getTime();
-	}
+	console.log("### URL IS " + req.url);
 	console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", req.session);
-	console.log("req.sessionId: " + req.sessionId);
 	console.log("req.session.id: " + req.session.id);
 	console.log("req.session.cookie: ", req.session.cookie);
 	console.log("req.url:" + req.url);
@@ -87,12 +92,25 @@ app.use((req, res, next) => {
 app.use((req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	router(req).then(data => {
-		res.send({data : data});
-	}).catch(err => {
-		console.error(err);
+	if (req.session.valid || req.url == "/login" || req.url == "/isLoggedIn") {
+		router(req).then(data => {
+			if (req.session.valid) {
+				if (!req.session.timestamp) {
+					req.session.timestamp = (new Date()).getTime();
+				}
+				req.session.cookie.expires = new Date((new Date()).getTime() + COOKIE_LIFE_MS);
+				req.session.views = req.session.views || 0;
+				req.session.views++;
+				console.log("views: " + req.session.views);
+			}
+			res.send({data : data});
+		}).catch(err => {
+			console.error(err);
+			res.status(404).end('NOT FOUND');
+		});
+	} else {
 		res.status(404).end('NOT FOUND');
-	});
+	}
 });
 
 /*
