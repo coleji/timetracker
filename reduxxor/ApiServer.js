@@ -67,6 +67,7 @@ app.use((req, res, next) => {
 	console.log("URL: " + req.url);
 	console.log("SESSIONID: ", req.session.id);
 	console.log("SESSION: ", req.session);
+	// is this an old session that should be expired?
 	if (req.session.valid && req.session.expires < (new Date()).getTime()) {
 		req.session.valid = false;
 		req.session.userName = null;
@@ -84,13 +85,15 @@ app.use((req, res) => {
 	if (req.session.valid || req.url == "/login" || req.url == "/isLoggedIn" || req.url == 'logout') {
 		router(req).then(data => {
 			if (req.url == '/login' && null != data) {
+				// successful login; activate this session
 				req.session.userName = req.body.userName;
 				req.session.valid = true;
 				req.session.expires = (new Date()).getTime() + SESSION_LIFE_MS;
 			}
 			if (req.session && req.session.valid) {
+				// did a thing in a valid session; bump the timeout
 				req.session.cookie.expires = new Date((new Date()).getTime() + COOKIE_LIFE_MS);
-				req.session.expires = new Date((new Date()).getTime() + SESSION_LIFE_MS);
+				req.session.expires = (new Date()).getTime() + SESSION_LIFE_MS;
 				req.session.views = req.session.views || 0;
 				req.session.views++;
 				console.log("views: " + req.session.views);
@@ -102,6 +105,7 @@ app.use((req, res) => {
 			res.status(404).end('NOT FOUND');
 		});
 	} else {
+		// expired session; tell the browser so it can abort current action and nav to the login screen
 		console.log("expiration: " + req.session.expires);
 		console.log("request timestamp: " + (new Date()).getTime());
 		console.log("!!!!!!!!!!!!!!!!   session is expired");
