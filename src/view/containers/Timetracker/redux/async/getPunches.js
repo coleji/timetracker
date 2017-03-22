@@ -6,14 +6,15 @@ import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConne
 import { sortPunches } from '../../../../../app-util';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
-	var {dayOffset, config} = params;
+	var {dayOffset, config, dispatch} = params;
 	if (isNaN(dayOffset)) dayOffset = 0;
 	else dayOffset = Number(dayOffset);
 	createActionFromAPIResponse({
 		httpMethod: 'GET',
 		apiEndpoint : '/getPunches/' + dayOffset,
 		stateItemName : 'punches',
-		config
+		config,
+		dispatch
 	}).then(punches => {
 		punches = punches || [];
 		punches.forEach(e => { e.punchDate = moment(e.punchDate); });

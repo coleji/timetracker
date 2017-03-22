@@ -25,17 +25,10 @@ export default function(req) {
 		return changePassword(req.dbPool, req.body.oldPw, req.body.newPw, req.session.userName);
 	case 'login':
 		return new Promise((resolve) => {
-		//	req.session.regenerate(err => {
-		//		if (err) console.log("Error regenerating session: " + err);
 			resolve();
-		//	});
 		}).then(() => {
 			return login(req.dbPool, req.body.userName, req.body.password);
 		}).then(data => {
-			if (data) {
-				req.session.valid = true;
-				req.session.userName = req.body.userName;
-			}
 			return Promise.resolve(data);
 		});
 	case 'logout':
@@ -50,7 +43,6 @@ export default function(req) {
 		});
 	case 'isLoggedIn':
 		return new Promise((resolve) => {
-			console.log("Before reload: ", req.session);
 	//		req.session.reload(err => {
 	//			console.log("After reload: ", req.session);
 	//			if (err) resolve(null);

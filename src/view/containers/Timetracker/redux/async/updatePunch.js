@@ -4,14 +4,15 @@ import ReduxModule from '../../../../../../reduxxor/ReduxModule';
 import { createActionFromAPIResponse } from '../../../../../../reduxxor/ApiConnector';
 
 const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
-	let {punchID, punchDate, deltaMinutes, config} = params;
+	let {punchID, punchDate, deltaMinutes, config, dispatch} = params;
 	if (isNaN(deltaMinutes)) return;
 	let newDate = moment(punchDate).add(+deltaMinutes,'minutes');
 	createActionFromAPIResponse({
 		httpMethod: 'POST',
 		apiEndpoint : '/updatePunch',
 		postData :  { punchID, newDate },
-		config
+		config,
+		dispatch
 	}).catch(e => console.log(e));
 
 	optimisticDispatch({

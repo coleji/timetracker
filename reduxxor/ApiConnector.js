@@ -47,7 +47,12 @@ var createActionFromAPIResponse = function(params) {
 		.then((json) => {
 			let data = json.data;
 			if (params.dataForEach) data.forEach(params.dataForEach);
-			resolve(data);
+			if (params.dispatch && data && data.sessionExpired) {
+				params.dispatch({
+					type: "LOGOUT"
+				});
+				reject("Session expired.");
+			} else resolve(data);
 		}).catch((e) => {
 			reject(e);
 		});

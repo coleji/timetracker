@@ -23,7 +23,8 @@ var storeOptions = {
 };
 
 const SECRET = "dfgdfgdfgdfg";
-const COOKIE_LIFE_MS = 30000;
+const COOKIE_LIFE_MS = 1000 * 60 * 60 * 24;
+const SESSION_LIFE_MS = 1000 * 60 * 60 * 1;
 
 app.use(bodyParser.json());
 app.use(cookieParser(SECRET));
@@ -64,23 +65,36 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
 	console.log("URL: " + req.url);
+	console.log("SESSIONID: ", req.session.id);
 	console.log("SESSION: ", req.session);
+	if (req.session.valid && req.session.expires < (new Date()).getTime()) {
+		req.session.valid = false;
+		req.session.userName = null;
+	}
 	next();
 });
 
 app.use((req, res) => {
 	res.setHeader('Access-Control-Allow-Origin', 'http://' + config.host + ':' + config.port);
 	res.setHeader('Access-Control-Allow-Credentials', 'true');
-	if (req.session.valid || req.url == "/login" || req.url == "/isLoggedIn") {
+	// Valid reasons to execute this request:
+	// - asking if session is logged in (i.e. is valid)
+	// - trying to log in
+	// - session is valid and not expired
+	if (req.session.valid || req.url == "/login" || req.url == "/isLoggedIn" || req.url == 'logout') {
 		router(req).then(data => {
-			if (req.session.valid) {
-				if (!req.session.timestamp) {
-					req.session.timestamp = (new Date()).getTime();
-				}
+			if (req.url == '/login' && null != data) {
+				req.session.userName = req.body.userName;
+				req.session.valid = true;
+				req.session.expires = (new Date()).getTime() + SESSION_LIFE_MS;
+			}
+			if (req.session && req.session.valid) {
 				req.session.cookie.expires = new Date((new Date()).getTime() + COOKIE_LIFE_MS);
+				req.session.expires = new Date((new Date()).getTime() + SESSION_LIFE_MS);
 				req.session.views = req.session.views || 0;
 				req.session.views++;
 				console.log("views: " + req.session.views);
+				console.log("Your session will die in " + ((req.session.expires - (new Date()).getTime()) / 1000) + " seconds");
 			}
 			res.send({data : data});
 		}).catch(err => {
@@ -88,7 +102,10 @@ app.use((req, res) => {
 			res.status(404).end('NOT FOUND');
 		});
 	} else {
-		res.status(404).end('NOT FOUND');
+		console.log("expiration: " + req.session.expires);
+		console.log("request timestamp: " + (new Date()).getTime());
+		console.log("!!!!!!!!!!!!!!!!   session is expired");
+		res.send({data : {sessionExpired : true}});
 	}
 });
 
