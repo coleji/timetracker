@@ -3,7 +3,9 @@ const modules = [
 	require('./existingTask'),
 	require('./getPunches'),
 	require('./updatePunch'),
-	require('./deletePunch')
+	require('./deletePunch'),
+	require('./enterTime'),
+	require('./unenterTime')
 ];
 
 const actionCreatorModules = modules.reduce((actionCreators, mod) => {

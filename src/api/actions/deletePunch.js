@@ -1,4 +1,5 @@
-export default function(dbPool, punchID) {
+export default function(dbPool, session, params) {
+	var { punchID } = params;
 	return new Promise((resolve, reject) => {
 		dbPool.query(
 			'delete from punches where punch_id = ?',[

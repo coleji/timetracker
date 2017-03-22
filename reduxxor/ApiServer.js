@@ -26,6 +26,8 @@ const SECRET = "dfgdfgdfgdfg";
 const COOKIE_LIFE_MS = 1000 * 60 * 60 * 24;
 const SESSION_LIFE_MS = 1000 * 60 * 60 * 1;
 
+var dbPool = createPool();
+
 app.use(bodyParser.json());
 app.use(cookieParser(SECRET));
 
@@ -45,11 +47,6 @@ app.use((function() {
 }()));
 
 app.use((req, res, next) => {
-	req.dbPool = createPool();
-	next();
-});
-
-app.use((req, res, next) => {
 	if (req.method != 'OPTIONS') {
 		next();
 		return;
@@ -64,6 +61,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+	req.dbPool = dbPool;
 	console.log("URL: " + req.url);
 	console.log("SESSIONID: ", req.session.id);
 	console.log("SESSION: ", req.session);
@@ -84,9 +82,10 @@ app.use((req, res) => {
 	// - session is valid and not expired
 	if (req.session.valid || req.url == "/login" || req.url == "/isLoggedIn" || req.url == 'logout') {
 		router(req).then(data => {
-			if (req.url == '/login' && null != data) {
+			if (req.url == '/login' && !!data) {
 				// successful login; activate this session
-				req.session.userName = req.body.userName;
+				req.session.userID = data.userID;
+				req.session.userName = data.userName;
 				req.session.valid = true;
 				req.session.expires = (new Date()).getTime() + SESSION_LIFE_MS;
 			}

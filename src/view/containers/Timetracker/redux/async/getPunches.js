@@ -15,11 +15,12 @@ const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
 		stateItemName : 'punches',
 		config,
 		dispatch
-	}).then(punches => {
-		punches = punches || [];
+	}).then(result => {
+		var punches = result.punches || [];
 		punches.forEach(e => { e.punchDate = moment(e.punchDate); });
 		successDispatch({
 			punches : punches.sort(sortPunches),
+			enteredTime: result.entered,
 			dayOffset
 		});
 	}).catch(e => console.log(e));
@@ -28,6 +29,7 @@ const actionCreatorAbstract = (optimisticDispatch, successDispatch, params) => {
 const successReducer = (state, action) => {
 	return {
 		punches: action.punches,
+		enteredTime : action.enteredTime,
 		dayOffset : action.dayOffset
 	};
 };

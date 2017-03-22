@@ -1,6 +1,7 @@
 import { hash } from '../auth';
 
-export default function(dbPool, oldPw, newPw, userName) {
+export default function(dbPool, session, params) {
+	var { /*oldPw, */newPw, userName } = params;
 	return new Promise((resolve, reject) => {
 		let pwHash = hash(userName, newPw);
 		console.log("used new password " + newPw);

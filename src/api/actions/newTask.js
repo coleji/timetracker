@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 
-export default function(dbPool, taskName, punchDate) {
+export default function(dbPool, session, params) {
+	var { taskName, punchDate } = params;
 	var dateForInsert = moment(String(punchDate)).tz('America/New_York').format('YYYY-MM-DD HH:mm:ss');
 	return new Promise((resolve, reject) => {
 		dbPool.query(

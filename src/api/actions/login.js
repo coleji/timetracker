@@ -1,19 +1,21 @@
 import { hash } from '../auth';
 
-export default function(dbPool, userName, password) {
-	return new Promise((resolve/*, reject*/) => {
+export default function(dbPool, session, params) {
+	var { userName, password } = params;
+	return new Promise((resolve, reject) => {
 		let pwHash = hash(userName, password);
-		console.log("checking for username " + userName + ", pw " + password + ", hash " + pwHash);
-		resolve(password == "test");
-		/*
+		console.log("checking for username " + userName + ", hash " + pwHash);
 		dbPool.query(
-			'select 1 from users where user_name = ? and pw_hash = ?',
+			'select user_id, user_name from users where user_name = ? and pw_hash = ?',
 			[userName.toLowerCase(), pwHash],
 			function(err, results) {
-				console.log(results);
 				if (err) reject(err);
-				else resolve(results.length == 1);
+				else if (results.length != 1) resolve(false);
+				else resolve({
+					userID : results[0]["user_id"],
+					userName : results[0]["user_name"]
+				});
 			}
-		);*/
+		);
 	});
 }

@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { createConnection } from '../api/mysql';
+import { createConnection } from '../src/api/mysql';
 import { ArrayIterator } from '../src/app-util';
 
 var db = createConnection();

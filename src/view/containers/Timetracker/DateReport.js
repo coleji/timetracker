@@ -13,6 +13,7 @@ var config = {};
 	// mapStateToProps
 	state => ({
 		punches: state.punchData.punches,
+		enteredTime: state.punchData.enteredTime,
 		dayOffset : state.punchData.dayOffset,
 		config: state.config
 	}),
@@ -24,6 +25,14 @@ var config = {};
 			},
 			deletePunch: (punchID) => {
 				asyncActions.deletePunch(config, dispatch, {punchID});
+			},
+			enterTime: (dayOffset, isEntered) => {
+				if (!isEntered) {
+					if (confirm("Are you sure you want to stamp this day as Entered?")) asyncActions.enterTime(config, dispatch, {dayOffset});
+				} else {
+					if (confirm("Are you sure you want to stamp this day as Unentered?")) asyncActions.unenterTime(config, dispatch, {dayOffset});
+				}
+
 			}
 		};
 	}
@@ -35,7 +44,13 @@ class DateReport extends React.Component {
 			<tbody>
 				<tr>
 					<th>Del</th>
-					<th>Punch ({moment().add(this.props.dayOffset, 'days').format('MM/DD/YYYY')})</th>
+					<th>Punch
+						({moment().add(this.props.dayOffset, 'days').format('MM/DD/YYYY')})
+						{" "}
+						<span onClick={this.props.enterTime.bind(this, this.props.dayOffset, this.props.enteredTime)}>
+							{this.props.enteredTime ? "Entered" : "Not Entered"}
+						</span>
+					</th>
 					<th>Task ({this.props.punches.length})</th>
 					<th>Duration</th>
 					<th>Actions</th>
