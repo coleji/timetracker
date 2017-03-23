@@ -5,7 +5,8 @@ const modules = [
 	require('./updatePunch'),
 	require('./deletePunch'),
 	require('./enterTime'),
-	require('./unenterTime')
+	require('./unenterTime'),
+	require('./getUnenteredDays')
 ];
 
 const actionCreatorModules = modules.reduce((actionCreators, mod) => {

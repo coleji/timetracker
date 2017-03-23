@@ -46,8 +46,10 @@ class DateReport extends React.Component {
 					<th>Del</th>
 					<th>Punch
 						({moment().add(this.props.dayOffset, 'days').format('MM/DD/YYYY')})
-						{" "}
+						{"   "}
 						<span onClick={this.props.enterTime.bind(this, this.props.dayOffset, this.props.enteredTime)}>
+							{this.props.enteredTime ? <img src="rsz_green-check.png" /> : <img src="rsz_redx.png" />}
+							{" "}
 							{this.props.enteredTime ? "Entered" : "Not Entered"}
 						</span>
 					</th>

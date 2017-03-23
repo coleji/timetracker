@@ -7,6 +7,7 @@ moment().format();
 
 const DEFAULT_STATE = {
 	punches: [],
+	unenteredDays : [],
 	tasks : [],
 	dayOffset : 0,
 	asyncIDCounter : -1

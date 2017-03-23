@@ -6,6 +6,7 @@ import deletePunch from './actions/deletePunch';
 import login from './actions/login';
 import { enterTime, unenterTime } from './actions/enterTime';
 import changePassword from './actions/changePassword';
+import getUnenteredDays from './actions/getUnenteredDays';
 
 export default function(req) {
 	var urlComponents = req.url.split('/');
@@ -14,6 +15,8 @@ export default function(req) {
 	switch (urlComponents[0]) {
 	case 'getPunches':
 		return getPunches(req.dbPool, req.session, {addDays: urlComponents[1]});
+	case 'getUnenteredDays':
+		return getUnenteredDays(req.dbPool, req.session);
 	case 'enterTime':
 		return enterTime(req.dbPool, req.session, {addDays: urlComponents[1]});
 	case 'unenterTime':
