@@ -8,7 +8,7 @@ const UnenteredDaysReport = (props) => {
 	return <Table striped bordered condensed hover cellSpacing="5">
 		<tbody>
 			<tr>
-				<th>Unentered Days</th>
+				<th>Unentered Days (Live update NYI)</th>
 			</tr>
 			{props.unenteredDays.map(day =>
 				<tr key={day}><td>
